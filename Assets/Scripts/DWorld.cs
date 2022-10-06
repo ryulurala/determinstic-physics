@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class World
+public class DWorld
 {
-    List<Entity> _entityList = new List<Entity>();
+    List<DObject> _entityList = new List<DObject>();
     Vector3 _gravity;
 
-    public World(Vector3 gravity)
+    public DWorld(Vector3 gravity)
     {
         _gravity = gravity;
     }
 
-    public void AddObject(Entity entity)
+    public void AddObject(DObject entity)
     {
         _entityList.Add(entity);
     }
 
-    public void RemoveObject(Entity entity)
+    public void RemoveObject(DObject entity)
     {
         _entityList.Remove(entity);
     }
@@ -26,7 +26,7 @@ public class World
     {
         for (int i = 0; i < _entityList.Count; i++)
         {
-            Entity entity = _entityList[i];
+            DObject entity = _entityList[i];
 
             entity.Force += entity.Mass * _gravity;     // 중력 적용
 

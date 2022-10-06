@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Demo : MonoBehaviour
 {
-    World _world;
+    DWorld _dWorld;
 
     public Vector3 Gravity;
 
@@ -15,9 +15,9 @@ public class Demo : MonoBehaviour
 
     void Awake()
     {
-        _world = new World(Gravity);
+        _dWorld = new DWorld(Gravity);
 
-        _world.AddObject(new Entity(mass: 10f));
+        _dWorld.AddObject(new DObject(mass: 10f));
     }
 
     void Start()
@@ -26,6 +26,6 @@ public class Demo : MonoBehaviour
 
     void Update()
     {
-        _world.Step(Time.deltaTime);
+        _dWorld.Step(Time.deltaTime);
     }
 }
