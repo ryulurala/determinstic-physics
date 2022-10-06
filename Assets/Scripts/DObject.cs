@@ -19,6 +19,6 @@ public class DObject
 
         Mass = mass;
 
-        UnityObject = new GameObject() { name = "DObject" };
+        UnityObject = Demo.Instance.CreateObject();
     }
 }

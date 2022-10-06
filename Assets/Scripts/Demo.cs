@@ -6,6 +6,10 @@ public class Demo : MonoBehaviour
 {
     DWorld _dWorld;
 
+    public static Demo Instance { get; private set; }
+
+    public GameObject Prefab;
+
     public Vector3 Gravity;
 
     void Reset()
@@ -15,6 +19,8 @@ public class Demo : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
+
         _dWorld = new DWorld(Gravity);
 
         _dWorld.AddObject(new DObject(mass: 10f));
@@ -27,5 +33,10 @@ public class Demo : MonoBehaviour
     void Update()
     {
         _dWorld.Step(Time.deltaTime);
+    }
+
+    public GameObject CreateObject()
+    {
+        return Instantiate(Prefab);
     }
 }
