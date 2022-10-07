@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Demo : MonoBehaviour
 {
-    DWorld _dWorld;
+    DynamicWorld _dWorld;
 
     public static Demo Instance { get; private set; }
 
-    public GameObject Prefab;
+    public GameObject sphere;
 
     public Vector3 Gravity;
 
@@ -21,22 +21,23 @@ public class Demo : MonoBehaviour
     {
         Instance = this;
 
-        _dWorld = new DWorld(Gravity);
+        _dWorld = new DynamicWorld(Gravity);
 
-        _dWorld.AddObject(new DObject(mass: 10f));
+        _dWorld.AddRigidbody(new DRigidbody(10f, true, true));
+        _dWorld.AddRigidbody(new DRigidbody(10f, true, true));
     }
 
     void Start()
     {
     }
 
-    void Update()
+    void FixedUpdate()
     {
         _dWorld.Step(Time.deltaTime);
     }
 
     public GameObject CreateObject()
     {
-        return Instantiate(Prefab);
+        return Instantiate(sphere);
     }
 }

@@ -1,75 +1,141 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DWorld
 {
-    List<DCollision> _collisions = new List<DCollision>();
+    protected List<DObject> _objectList { get; } = new List<DObject>();
 
-    List<DObject> _objectList = new List<DObject>();
-    Vector3 _gravity;
-
-    public DWorld(Vector3 gravity)
+    public virtual void Step(float deltaTime)
     {
-        _gravity = gravity;
+
+    }
+}
+
+public class CollisionWorld : DWorld
+{
+    protected List<DSolver> _solverList { get; } = new List<DSolver>();
+
+    public void AddCollisionObject(DCollisionObject collisionObject)
+    {
+        _objectList.Add(collisionObject);
     }
 
-    public void AddObject(DObject entity)
+    public void RemoveCollisionObject(DCollisionObject collisionObject)
     {
-        _objectList.Add(entity);
+        _objectList.Remove(collisionObject);
     }
 
-    public void RemoveObject(DObject entity)
+    public void AddSolver(DSolver solver) => _solverList.Add(solver);
+    public void RemoveSolver(DSolver solver) => _solverList.Remove(solver);
+
+    public void SolvedCollisions(List<DCollision> collisions, float deltaTime)
     {
-        _objectList.Remove(entity);
-    }
-
-    public void Step(float deltaTime)
-    {
-        DetectCollisionStep(deltaTime);
-        ResponseCollisionStep(deltaTime);
-
-        DynamicStep(deltaTime);
-    }
-
-    void DetectCollisionStep(float deltaTime)
-    {
-        _collisions.Clear();
-
-        foreach (DObject objA in _objectList)
+        foreach (DSolver solver in _solverList)
         {
-            foreach (DObject objB in _objectList)
+            solver.Solve(collisions, deltaTime);
+        }
+    }
+
+    public void SendCollisionCallback(List<DCollision> collisions, float deltaTime)
+    {
+        foreach (DCollision collision in collisions)
+        {
+            collision.ObjectA.OnCollision?.Invoke(collision, deltaTime);
+            collision.ObjectB.OnCollision?.Invoke(collision, deltaTime);
+        }
+    }
+
+    public void ResolveCollisions(float deltaTime)
+    {
+        // Collision Detection
+        List<DCollision> collisions = new List<DCollision>();
+        List<DCollision> triggers = new List<DCollision>();
+        foreach (DCollisionObject objA in _objectList)
+        {
+            foreach (DCollisionObject objB in _objectList)
             {
                 if (objA == objB)
                     break;
-                else if (objA.Collider == null || objB == null)
+                else if (objA.DCollider == null || objB.DCollider == null)
                     continue;
 
-                DCollisionPoints points = objA.Collider.TestCollision(objA.Transform, objB.Collider, objB.Transform);
+                DCollisionPoints points = objA.DCollider.TestCollision(objA.DTransform, objB.DCollider, objB.DTransform);
 
                 if (points.HasCollision)
-                    _collisions.Add(new DCollision() { ObjectA = objA, ObjectB = objB, Points = points });
+                {
+                    if (objA.IsTrigger || objB.IsTrigger)
+                        triggers.Add(new DCollision() { ObjectA = objA, ObjectB = objB, Points = points });
+                    else
+                        collisions.Add(new DCollision() { ObjectA = objA, ObjectB = objB, Points = points });
+                }
+            }
+        }
+
+        // Collision Response
+        SolvedCollisions(collisions, deltaTime);
+        // Collision Callback
+        SendCollisionCallback(collisions, deltaTime);
+        SendCollisionCallback(triggers, deltaTime);
+    }
+
+    public override void Step(float deltaTime)
+    {
+
+    }
+}
+
+public class DynamicWorld : CollisionWorld
+{
+    Vector3 _gravity;
+
+    public DynamicWorld(Vector3 gravity) => _gravity = gravity;
+
+    public void AddRigidbody(DRigidbody rigidbody)
+    {
+        AddCollisionObject(rigidbody);
+    }
+
+    public void ApplyGravity()
+    {
+        foreach (DCollisionObject collisionObject in _objectList)
+        {
+            if (collisionObject is DRigidbody rigidbody)
+            {
+                if (!rigidbody.IsKenematic)
+                    continue;
+                else if (rigidbody.UseGravity)
+                    rigidbody.Force += _gravity * rigidbody.Mass;
             }
         }
     }
 
-    void ResponseCollisionStep(float deltaTime)
+    public void MoveObject(float deltaTime)
     {
+        foreach (DCollisionObject collisionObject in _objectList)
+        {
+            if (collisionObject is DRigidbody rigidbody)
+            {
+                if (!rigidbody.IsKenematic)
+                    continue;
 
+                // 속도 = 가속도(= 힘/질량) * 시간
+                rigidbody.Velocity += rigidbody.Force / rigidbody.Mass * deltaTime;
+
+                // 위치 = 속도 * 시간
+                rigidbody.DTransform.Position += rigidbody.Velocity * deltaTime;
+
+                // 알짜힘 초기화
+                rigidbody.Force = Vector3.zero;
+            }
+        }
     }
 
-    void DynamicStep(float deltaTime)
+    public override void Step(float deltaTime)
     {
-        foreach (DObject obj in _objectList)
-        {
-            obj.Force += obj.Mass * _gravity;     // 중력 적용
-
-            obj.Velocity += obj.Force / obj.Mass * deltaTime;  // 속도 = 가속도(= 힘/질량) * 시간
-            obj.Position += obj.Velocity * deltaTime;     // 위치 = 속도 * 시간
-
-            obj.Force = Vector3.zero;    // 알짜힘 초기화
-
-            obj.UnityObject.transform.position = obj.Position;
-        }
+        ApplyGravity();         // Add Gravity
+        ResolveCollisions(deltaTime);   // Collision
+        MoveObject(deltaTime);  // Velocity
     }
 }
