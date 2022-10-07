@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class DWorld
 {
-    List<DObject> _entityList = new List<DObject>();
+    List<DCollision> _collisions = new List<DCollision>();
+
+    List<DObject> _objectList = new List<DObject>();
     Vector3 _gravity;
 
     public DWorld(Vector3 gravity)
@@ -14,28 +16,60 @@ public class DWorld
 
     public void AddObject(DObject entity)
     {
-        _entityList.Add(entity);
+        _objectList.Add(entity);
     }
 
     public void RemoveObject(DObject entity)
     {
-        _entityList.Remove(entity);
+        _objectList.Remove(entity);
     }
 
     public void Step(float deltaTime)
     {
-        for (int i = 0; i < _entityList.Count; i++)
+        DetectCollisionStep(deltaTime);
+        ResponseCollisionStep(deltaTime);
+
+        DynamicStep(deltaTime);
+    }
+
+    void DetectCollisionStep(float deltaTime)
+    {
+        _collisions.Clear();
+
+        foreach (DObject objA in _objectList)
         {
-            DObject entity = _entityList[i];
+            foreach (DObject objB in _objectList)
+            {
+                if (objA == objB)
+                    break;
+                else if (objA.Collider == null || objB == null)
+                    continue;
 
-            entity.Force += entity.Mass * _gravity;     // 중력 적용
+                DCollisionPoints points = objA.Collider.TestCollision(objA.Transform, objB.Collider, objB.Transform);
 
-            entity.Velocity += entity.Force / entity.Mass * deltaTime;  // 속도 = 가속도(= 힘/질량) * 시간
-            entity.Position += entity.Velocity * deltaTime;     // 위치 = 속도 * 시간
+                if (points.HasCollision)
+                    _collisions.Add(new DCollision() { ObjectA = objA, ObjectB = objB, Points = points });
+            }
+        }
+    }
 
-            entity.Force = Vector3.zero;    // 알짜힘 초기화
+    void ResponseCollisionStep(float deltaTime)
+    {
 
-            entity.UnityObject.transform.position = entity.Position;
+    }
+
+    void DynamicStep(float deltaTime)
+    {
+        foreach (DObject obj in _objectList)
+        {
+            obj.Force += obj.Mass * _gravity;     // 중력 적용
+
+            obj.Velocity += obj.Force / obj.Mass * deltaTime;  // 속도 = 가속도(= 힘/질량) * 시간
+            obj.Position += obj.Velocity * deltaTime;     // 위치 = 속도 * 시간
+
+            obj.Force = Vector3.zero;    // 알짜힘 초기화
+
+            obj.UnityObject.transform.position = obj.Position;
         }
     }
 }

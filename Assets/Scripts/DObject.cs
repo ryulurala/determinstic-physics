@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class DObject
 {
-    public Vector3 Position;
-    public Vector3 Velocity;
-    public Vector3 Force;
-    public float Mass;
+    public Vector3 Position { get; set; }
+    public Vector3 Velocity { get; set; }
+    public Vector3 Force { get; set; }
+    public float Mass { get; set; }
 
-    public GameObject UnityObject;  // DObject 대응하는 Unity Object
+    public DCollider Collider { get; set; }
+    public DTransform Transform { get; set; }
+
+    public GameObject UnityObject { get; set; }  // DObject 대응하는 Unity Object
 
     public DObject(float mass)
     {
