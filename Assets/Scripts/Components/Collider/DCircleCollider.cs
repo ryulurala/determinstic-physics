@@ -4,14 +4,14 @@ using UnityEngine;
 public class DCircleCollider : DCollider
 {
     public float Radius { get; set; }
-    public Vector3 Center { get; set; }
+    public Vector2 Center { get; set; }
 
     public DCircleCollider(DObject dObject, float radius)
     {
         DObject = dObject;
         Radius = radius;
 
-        Center = Vector3.zero;
+        Center = Vector2.zero;
     }
 
     public DCircleCollider(DObject dObject, float radius, Action<CollisionPoint, float> callback)
@@ -21,7 +21,7 @@ public class DCircleCollider : DCollider
 
         OnCollision = callback;
 
-        Center = Vector3.zero;
+        Center = Vector2.zero;
     }
 
     public override bool Intersect(DCollider other, out CollisionPoint collisionPoint)
@@ -35,8 +35,8 @@ public class DCircleCollider : DCollider
 
         float radiusDist = this.Radius + other.Radius;
 
-        Vector2 thisCenter = this.Center + this.DObject.DTransform.Position;
-        Vector2 otherCenter = other.Center + other.DObject.DTransform.Position;
+        Vector2 thisCenter = this.Center + (Vector2)this.DObject.DTransform.Position;
+        Vector2 otherCenter = other.Center + (Vector2)other.DObject.DTransform.Position;
 
         Vector2 thisToOther = otherCenter - thisCenter;
         float centerDist = thisToOther.magnitude;
@@ -55,7 +55,7 @@ public class DCircleCollider : DCollider
         if (centerDist > 0f)
         {
             penetration = radiusDist - centerDist;
-            normal = thisToOther / centerDist;
+            normal = thisToOther.normalized;
         }
         else
         {

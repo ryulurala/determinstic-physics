@@ -3,49 +3,34 @@ using UnityEngine;
 
 public class ImpluseSolver : ISolver
 {
+    readonly float _speed;
+
+    public ImpluseSolver(float speed)
+    {
+        _speed = speed;
+    }
+
     public void Solve(List<CollisionPoint> collisions, float deltaTime)
     {
         foreach (CollisionPoint collision in collisions)
         {
-            // Vector3 velocityA = Vector3.zero;
-            // Vector3 velocityB = Vector3.zero;
+            DObject dObjectA = collision.DObjectA;
+            DObject dObjectB = collision.DObjectB;
 
-            // float massA = 1f;
-            // float massB = 1f;
+            if (dObjectA.DRigidbody == null || dObjectB.DRigidbody == null)
+                continue;
 
-            // if (collision.ObjectA is DRigidbody rigidbodyA)
-            // {
-            //     velocityA = rigidbodyA.Velocity;
-            //     massA = rigidbodyA.Mass;
-            // }
-            // if (collision.ObjectB is DRigidbody rigidbodyB)
-            // {
-            //     velocityB = rigidbodyB.Velocity;
-            //     massB = rigidbodyB.Mass;
-            // }
+            Vector3 diffVelocity = dObjectB.DRigidbody.Velocity - dObjectA.DRigidbody.Velocity;
 
-            // Vector3 rVel = velocityB - velocityA;
-            // float nSpd = Vector3.Dot(rVel, collision.Points.Normal);
+            float bias = collision.Penetration * deltaTime;
+            float velocityForce = Vector3.Dot(diffVelocity, collision.Normal);
 
-            // // Impluse
-            // if (nSpd >= 0)
-            //     continue;
+            float forceMagnitude = (bias - velocityForce) / (dObjectA.DRigidbody.Mass + dObjectB.DRigidbody.Mass);
+            forceMagnitude = forceMagnitude > 0f ? forceMagnitude : 0f;
 
-            // float e = 1f;
-            // float j = -(1f + e) * nSpd / (massA + massB);
-
-            // Vector3 impulse = j * collision.Points.Normal;
-
-            // if (collision.ObjectA is DRigidbody ra)
-            // {
-            //     ra.Velocity -= impulse * massA;
-            // }
-            // if (collision.ObjectB is DRigidbody rb)
-            // {
-            //     rb.Velocity -= impulse * massB;
-            // }
-
-            // // Friction
+            Vector3 force = collision.Normal * forceMagnitude;
+            dObjectA.DRigidbody.Velocity -= force * dObjectA.DRigidbody.Mass * _speed;
+            dObjectB.DRigidbody.Velocity += force * dObjectB.DRigidbody.Mass * _speed;
         }
     }
 }

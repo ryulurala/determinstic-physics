@@ -22,20 +22,24 @@ public class Demo : MonoBehaviour
         Instance = this;
 
         _dWorld = new DynamicWorld(Gravity);
+        if (_dWorld is CollisionWorld world)
+        {
+            world.AddSolver(new ImpluseSolver(speed: 2000f));
+        }
 
         {
             DObject dObject = new DObject();
             dObject.DTransform.Position = Vector2.zero;
-            dObject.DCollider = new DCircleCollider(dObject, 1f, (collsionPoint, deltaTime) => { Debug.Log($"충돌! A"); });
-            dObject.DRigidbody = new DRigidbody(dObject, false, true, 1f);
+            dObject.DCollider = new DCircleCollider(dObject, 0.5f, (collsionPoint, deltaTime) => { Debug.Log($"충돌! A"); });
+            dObject.DRigidbody = new DRigidbody(dObject, isKinematic: false, useGravity: false, 1f, 0f);
 
             _dWorld.AddObject(dObject);
         }
         {
             DObject dObject = new DObject();
-            dObject.DTransform.Position = new Vector3(5f, 0f, 5f);
-            dObject.DCollider = new DCircleCollider(dObject, 1f, (collsionPoint, deltaTime) => { Debug.Log($"충돌! B"); });
-            dObject.DRigidbody = new DRigidbody(dObject, false, true, 1f);
+            dObject.DTransform.Position = Vector2.zero;
+            dObject.DCollider = new DCircleCollider(dObject, 0.5f, (collsionPoint, deltaTime) => { Debug.Log($"충돌! B"); });
+            dObject.DRigidbody = new DRigidbody(dObject, isKinematic: false, useGravity: false, 1f, 0f);
 
             _dWorld.AddObject(dObject);
         }

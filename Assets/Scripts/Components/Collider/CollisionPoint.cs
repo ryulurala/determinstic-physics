@@ -7,7 +7,7 @@ public class CollisionPoint
 
     public Vector2 Normal { get; set; }
 
-    float Penetration { get; set; }
+    public float Penetration { get; set; }
 
     public CollisionPoint(DObject dObjectA, DObject dObjectB)
     {

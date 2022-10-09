@@ -8,11 +8,12 @@ public class DRigidbody
     public bool UseGravity { get; set; }
 
     public float Mass { get; set; }
+    public float Drag { get; set; }
 
     public Vector3 Velocity { get; set; }
     Vector3 _force;
 
-    public DRigidbody(DObject dObject, bool isKinematic, bool useGravity, float mass)
+    public DRigidbody(DObject dObject, bool isKinematic, bool useGravity, float mass, float drag)
     {
         DObject = dObject;
 
@@ -20,6 +21,7 @@ public class DRigidbody
         UseGravity = useGravity;
 
         Mass = mass;
+        Drag = drag;
 
         Velocity = Vector3.zero;
         _force = Vector3.zero;
@@ -29,6 +31,11 @@ public class DRigidbody
     {
         if (!IsKinematic)
             _force += force;
+    }
+
+    public void ApplyDrag()
+    {
+        Velocity *= Drag;
     }
 
     public void Transform(float deltaTime)

@@ -13,22 +13,25 @@ public class DynamicWorld : CollisionWorld
     {
         base.Step(deltaTime);
 
-        // Add Gravity
-        ApplyGravity();
+        // Gravity, Drag
+        ApplyForces();
         // Collision
         ResolveCollisions(deltaTime);
         // Transform
         Transform(deltaTime);
     }
 
-    void ApplyGravity()
+    void ApplyForces()
     {
         foreach (DObject dObject in _dObjectList)
         {
             if (dObject.DRigidbody == null)
                 continue;
             else if (dObject.DRigidbody.UseGravity)
-                dObject.DRigidbody.AddForce(_gravity * dObject.DRigidbody.Mass);
+                dObject.DRigidbody.AddForce(_gravity * dObject.DRigidbody.Mass);    // Gravity
+
+            // Drag
+            dObject.DRigidbody.ApplyDrag();
         }
     }
 
