@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Demo : MonoBehaviour
 {
-    DynamicWorld _dWorld;
+    DWorld _dWorld;
 
     public static Demo Instance { get; private set; }
 
@@ -23,8 +23,13 @@ public class Demo : MonoBehaviour
 
         _dWorld = new DynamicWorld(Gravity);
 
-        _dWorld.AddRigidbody(new DRigidbody(10f, true, true));
-        _dWorld.AddRigidbody(new DRigidbody(10f, true, true));
+        {
+            DObject dObject = new DObject();
+            dObject.DCollider = new DCircleCollider(dObject, 1f);
+            dObject.DRigidbody = new DRigidbody(dObject, false, true, 1f);
+
+            _dWorld.AddObject(dObject);
+        }
     }
 
     void Start()
