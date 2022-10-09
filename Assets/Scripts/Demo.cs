@@ -10,7 +10,7 @@ public class Demo : MonoBehaviour
 
     public GameObject sphere;
 
-    public Vector3 Gravity;
+    public Vector3 Gravity = new Vector3(0f, -9.81f, 0f);
 
     void Reset()
     {
@@ -25,7 +25,16 @@ public class Demo : MonoBehaviour
 
         {
             DObject dObject = new DObject();
-            dObject.DCollider = new DCircleCollider(dObject, 1f);
+            dObject.DTransform.Position = Vector2.zero;
+            dObject.DCollider = new DCircleCollider(dObject, 1f, (collsionPoint, deltaTime) => { Debug.Log($"충돌! A"); });
+            dObject.DRigidbody = new DRigidbody(dObject, false, true, 1f);
+
+            _dWorld.AddObject(dObject);
+        }
+        {
+            DObject dObject = new DObject();
+            dObject.DTransform.Position = new Vector3(5f, 0f, 5f);
+            dObject.DCollider = new DCircleCollider(dObject, 1f, (collsionPoint, deltaTime) => { Debug.Log($"충돌! B"); });
             dObject.DRigidbody = new DRigidbody(dObject, false, true, 1f);
 
             _dWorld.AddObject(dObject);

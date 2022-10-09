@@ -8,6 +8,6 @@ public abstract class DCollider
 
     public Action<CollisionPoint, float> OnCollision { get; set; }
 
-    public abstract bool Intersect(DCollider dCollider, out CollisionPoint collisionPoint);
-    public abstract bool Intersect(DCircleCollider dCircle, out CollisionPoint collisionPoint);
+    public abstract bool Intersect(DCollider other, out CollisionPoint collisionPoint);
+    public abstract bool Intersect(DCircleCollider other, out CollisionPoint collisionPoint);
 }
