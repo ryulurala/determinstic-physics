@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DRigidbody
+public class DRigidbody2D
 {
     public DObject DObject { get; private set; }
 
@@ -12,7 +12,7 @@ public class DRigidbody
     public Vector2 Velocity { get; set; }
     Vector2 _force;
 
-    public DRigidbody(DObject dObject, bool isKinematic, bool useGravity, float mass)
+    public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, float mass)
     {
         DObject = dObject;
 

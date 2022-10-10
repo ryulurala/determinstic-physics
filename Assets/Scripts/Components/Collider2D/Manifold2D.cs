@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CollisionPoint
+public class Manifold2D
 {
     public DObject DObjectA { get; set; }
     public DObject DObjectB { get; set; }
@@ -9,7 +9,7 @@ public class CollisionPoint
 
     public float Penetration { get; set; }
 
-    public CollisionPoint(DObject dObjectA, DObject dObjectB)
+    public Manifold2D(DObject dObjectA, DObject dObjectB)
     {
         DObjectA = dObjectA;
         DObjectB = dObjectB;
@@ -18,7 +18,7 @@ public class CollisionPoint
         Penetration = 0f;
     }
 
-    public CollisionPoint(DObject dObjectA, DObject dObjectB, Vector2 normal, float penetration)
+    public Manifold2D(DObject dObjectA, DObject dObjectB, Vector2 normal, float penetration)
     {
         DObjectA = dObjectA;
         DObjectB = dObjectB;

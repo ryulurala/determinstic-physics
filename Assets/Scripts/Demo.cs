@@ -10,11 +10,11 @@ public class Demo : MonoBehaviour
 
     public GameObject sphere;
 
-    public Vector2 Gravity = new Vector2(0f, -9.81f);
+    public Vector3 Gravity = new Vector3(0f, -9.81f, 0f);
 
     void Reset()
     {
-        Gravity = new Vector2(0f, -9.81f);
+        Gravity = new Vector3(0f, -9.81f, 0f);
     }
 
     void Awake()
@@ -24,29 +24,29 @@ public class Demo : MonoBehaviour
         _dWorld = new DynamicWorld(Gravity);
         if (_dWorld is CollisionWorld world)
         {
-            world.AddSolver(new PositionSolver());
-            world.AddSolver(new ImpluseSolver());
+            world.AddSolver(new Position2DSolver());
+            world.AddSolver(new Impluse2DSolver());
         }
 
         {
             DObject dObject = new DObject();
             dObject.DTransform.Position = Vector2.zero;
-            dObject.DCollider = new DCircleCollider(dObject, 0.5f, (collsionPoint, deltaTime) =>
+            dObject.DCollider = new DCircleCollider2D(dObject, 0.5f, (collsionPoint, deltaTime) =>
             {
                 // Debug.Log($"A 충돌됨!");
             });
-            dObject.DRigidbody = new DRigidbody(dObject, isKinematic: false, useGravity: false, 1f);
+            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, 1f);
 
             _dWorld.AddObject(dObject);
         }
         {
             DObject dObject = new DObject();
-            dObject.DTransform.Position = new Vector3(0f, 0f, 0f);
-            dObject.DCollider = new DCircleCollider(dObject, 0.5f, (collsionPoint, deltaTime) =>
+            dObject.DTransform.Position = Vector2.zero;
+            dObject.DCollider = new DCircleCollider2D(dObject, 0.5f, (collsionPoint, deltaTime) =>
             {
                 // Debug.Log($"B 충돌됨!");
             });
-            dObject.DRigidbody = new DRigidbody(dObject, isKinematic: false, useGravity: false, 1f);
+            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, 1f);
 
             _dWorld.AddObject(dObject);
         }

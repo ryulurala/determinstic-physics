@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class DynamicWorld : CollisionWorld
 {
-    Vector2 _gravity;
+    Vector3 _gravity;
 
-    public DynamicWorld(Vector2 gravity)
+    public DynamicWorld(Vector3 gravity)
     {
         _gravity = gravity;
     }
@@ -25,16 +25,16 @@ public class DynamicWorld : CollisionWorld
     {
         foreach (DObject dObject in _dObjectList)
         {
-            if (dObject.DRigidbody == null)
+            if (dObject.DRigidbody2D == null)
                 continue;
-            else if (dObject.DRigidbody.UseGravity)
-                dObject.DRigidbody.AddForce(_gravity * dObject.DRigidbody.Mass);    // Gravity
+            else if (dObject.DRigidbody2D.UseGravity)
+                dObject.DRigidbody2D.AddForce(_gravity * dObject.DRigidbody2D.Mass);    // Gravity
         }
     }
 
     void Transform(float deltaTime)
     {
         foreach (DObject dObject in _dObjectList)
-            dObject.DRigidbody?.Transform(deltaTime);
+            dObject.DRigidbody2D?.Transform(deltaTime);
     }
 }

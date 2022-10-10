@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 
-public class DCircleCollider : DCollider
+public class DCircleCollider2D : DCollider2D
 {
     public float Radius { get; set; }
     public Vector2 Center { get; set; }
 
-    public DCircleCollider(DObject dObject, float radius)
+    public DCircleCollider2D(DObject dObject, float radius)
     {
         DObject = dObject;
         Radius = radius;
@@ -14,7 +14,7 @@ public class DCircleCollider : DCollider
         Center = Vector2.zero;
     }
 
-    public DCircleCollider(DObject dObject, float radius, Action<CollisionPoint, float> callback)
+    public DCircleCollider2D(DObject dObject, float radius, Action<Manifold2D, float> callback)
     {
         DObject = dObject;
         Radius = radius;
@@ -24,12 +24,12 @@ public class DCircleCollider : DCollider
         Center = Vector2.zero;
     }
 
-    public override bool Intersect(DCollider other, out CollisionPoint collisionPoint)
+    public override bool Intersect(DCollider2D other, out Manifold2D collisionPoint)
     {
         return other.Intersect(this, out collisionPoint);
     }
 
-    public override bool Intersect(DCircleCollider other, out CollisionPoint collisionPoint)
+    public override bool Intersect(DCircleCollider2D other, out Manifold2D collisionPoint)
     {
         collisionPoint = null;
 
@@ -45,7 +45,7 @@ public class DCircleCollider : DCollider
             return false;
         else if (this.IsTrigger || other.IsTrigger)
         {
-            collisionPoint = new CollisionPoint(this.DObject, other.DObject);
+            collisionPoint = new Manifold2D(this.DObject, other.DObject);
 
             return true;
         }
@@ -63,7 +63,7 @@ public class DCircleCollider : DCollider
             normal = new Vector2(1f, 0f);
         }
 
-        collisionPoint = new CollisionPoint(this.DObject, other.DObject, normal, penetration);
+        collisionPoint = new Manifold2D(this.DObject, other.DObject, normal, penetration);
 
         return true;
     }

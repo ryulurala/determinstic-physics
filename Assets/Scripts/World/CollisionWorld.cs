@@ -17,8 +17,8 @@ public class CollisionWorld : DWorld
     protected void ResolveCollisions(float deltaTime)
     {
         // Collision Detection
-        List<CollisionPoint> collisions = new List<CollisionPoint>();
-        List<CollisionPoint> triggers = new List<CollisionPoint>();
+        List<Manifold2D> collisions = new List<Manifold2D>();
+        List<Manifold2D> triggers = new List<Manifold2D>();
 
         foreach (DObject dObjectA in _dObjectList)
         {
@@ -29,7 +29,7 @@ public class CollisionWorld : DWorld
                 else if (dObjectA.DCollider == null || dObjectB.DCollider == null)
                     continue;
 
-                CollisionPoint collisionPoint;
+                Manifold2D collisionPoint;
                 if (dObjectA.DCollider.Intersect(dObjectB.DCollider, out collisionPoint))
                 {
                     if (dObjectA.DCollider.IsTrigger || dObjectB.DCollider.IsTrigger)
@@ -49,7 +49,7 @@ public class CollisionWorld : DWorld
 
     }
 
-    void SolvedCollisions(List<CollisionPoint> collisionPoints, float deltaTime)
+    void SolvedCollisions(List<Manifold2D> collisionPoints, float deltaTime)
     {
         foreach (ISolver solver in _solverList)
         {
@@ -57,9 +57,9 @@ public class CollisionWorld : DWorld
         }
     }
 
-    void SendCollisionCallback(List<CollisionPoint> collisionPoints, float deltaTime)
+    void SendCollisionCallback(List<Manifold2D> collisionPoints, float deltaTime)
     {
-        foreach (CollisionPoint collisionPoint in collisionPoints)
+        foreach (Manifold2D collisionPoint in collisionPoints)
         {
             collisionPoint.DObjectA.DCollider.OnCollision?.Invoke(collisionPoint, deltaTime);
             collisionPoint.DObjectB.DCollider.OnCollision?.Invoke(collisionPoint, deltaTime);

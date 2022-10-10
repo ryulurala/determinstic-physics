@@ -5,8 +5,8 @@ public class DObject
     public GameObject RenderObject { get; set; }
     public DTransform DTransform { get; set; }
 
-    public DCollider DCollider { get; set; }
-    public DRigidbody DRigidbody { get; set; }
+    public DCollider2D DCollider { get; set; }
+    public DRigidbody2D DRigidbody2D { get; set; }
 
     public DObject()
     {
