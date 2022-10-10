@@ -1,2 +1,3 @@
-# PhysicsEngine
-Custom physics engine implemented by myself
+# determinstic-physics
+
+Implementation of Deterministic Physics system with Unity Engine
