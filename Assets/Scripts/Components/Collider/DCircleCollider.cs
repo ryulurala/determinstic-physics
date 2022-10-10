@@ -57,7 +57,7 @@ public class DCircleCollider : DCollider
             penetration = radiusDist - centerDist;
             normal = thisToOther.normalized;
         }
-        else
+        else    // centerDist == 0
         {
             penetration = this.Radius;
             normal = new Vector2(1f, 0f);

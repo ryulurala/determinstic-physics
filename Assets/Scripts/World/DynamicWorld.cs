@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class DynamicWorld : CollisionWorld
 {
-    Vector3 _gravity;
+    Vector2 _gravity;
 
-    public DynamicWorld(Vector3 gravity)
+    public DynamicWorld(Vector2 gravity)
     {
         _gravity = gravity;
     }
@@ -29,9 +29,6 @@ public class DynamicWorld : CollisionWorld
                 continue;
             else if (dObject.DRigidbody.UseGravity)
                 dObject.DRigidbody.AddForce(_gravity * dObject.DRigidbody.Mass);    // Gravity
-
-            // Drag
-            dObject.DRigidbody.ApplyDrag();
         }
     }
 

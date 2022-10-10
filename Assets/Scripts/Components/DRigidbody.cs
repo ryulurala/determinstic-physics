@@ -8,12 +8,11 @@ public class DRigidbody
     public bool UseGravity { get; set; }
 
     public float Mass { get; set; }
-    public float Drag { get; set; }
 
-    public Vector3 Velocity { get; set; }
-    Vector3 _force;
+    public Vector2 Velocity { get; set; }
+    Vector2 _force;
 
-    public DRigidbody(DObject dObject, bool isKinematic, bool useGravity, float mass, float drag)
+    public DRigidbody(DObject dObject, bool isKinematic, bool useGravity, float mass)
     {
         DObject = dObject;
 
@@ -21,21 +20,15 @@ public class DRigidbody
         UseGravity = useGravity;
 
         Mass = mass;
-        Drag = drag;
 
-        Velocity = Vector3.zero;
-        _force = Vector3.zero;
+        Velocity = Vector2.zero;
+        _force = Vector2.zero;
     }
 
-    public void AddForce(Vector3 force)
+    public void AddForce(Vector2 force)
     {
         if (!IsKinematic)
             _force += force;
-    }
-
-    public void ApplyDrag()
-    {
-        Velocity *= Drag;
     }
 
     public void Transform(float deltaTime)
@@ -44,9 +37,9 @@ public class DRigidbody
         Velocity += _force / Mass * deltaTime;
 
         // 위치 = 속도 * 시간
-        DObject.DTransform.Position += Velocity * deltaTime;
+        DObject.DTransform.Position += (Vector3)Velocity * deltaTime;
 
         // 알짜힘 초기화
-        _force = Vector3.zero;
+        _force = Vector2.zero;
     }
 }
