@@ -1,4 +1,5 @@
 using System;
+using FixedMath;
 
 public abstract class DCollider2D
 {
@@ -6,7 +7,7 @@ public abstract class DCollider2D
 
     public bool IsTrigger { get; set; }
 
-    public Action<Manifold2D, float> OnCollision { get; set; }
+    public Action<Manifold2D, Fix64> OnCollision { get; set; }
 
     public abstract bool Intersect(DCollider2D other, out Manifold2D collisionPoint);
     public abstract bool Intersect(DCircleCollider2D other, out Manifold2D collisionPoint);

@@ -1,3 +1,4 @@
+using FixedMath;
 using UnityEngine;
 
 public class DObject
@@ -14,7 +15,7 @@ public class DObject
         DTransform = new DTransform(RenderObject.transform);
     }
 
-    public void Step(float deltaTime)
+    public void Step(Fix64 deltaTime)
     {
 
     }

@@ -1,24 +1,24 @@
-using UnityEngine;
+using FixedMath;
 
 public class Manifold2D
 {
     public DObject DObjectA { get; set; }
     public DObject DObjectB { get; set; }
 
-    public Vector2 Normal { get; set; }
+    public Vector2Fix Normal { get; set; }
 
-    public float Penetration { get; set; }
+    public Fix64 Penetration { get; set; }
 
     public Manifold2D(DObject dObjectA, DObject dObjectB)
     {
         DObjectA = dObjectA;
         DObjectB = dObjectB;
 
-        Normal = Vector2.zero;
-        Penetration = 0f;
+        Normal = Vector2Fix.Zero;
+        Penetration = Fix64.Zero;
     }
 
-    public Manifold2D(DObject dObjectA, DObject dObjectB, Vector2 normal, float penetration)
+    public Manifold2D(DObject dObjectA, DObject dObjectB, Vector2Fix normal, Fix64 penetration)
     {
         DObjectA = dObjectA;
         DObjectB = dObjectB;

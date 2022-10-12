@@ -1,4 +1,4 @@
-using UnityEngine;
+using FixedMath;
 
 public class DRigidbody2D
 {
@@ -7,12 +7,12 @@ public class DRigidbody2D
     public bool IsKinematic { get; set; }
     public bool UseGravity { get; set; }
 
-    public float Mass { get; set; }
+    public Fix64 Mass { get; set; }
 
-    public Vector2 Velocity { get; set; }
-    Vector2 _force;
+    public Vector2Fix Velocity { get; set; }
+    Vector2Fix _force;
 
-    public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, float mass)
+    public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, Fix64 mass)
     {
         DObject = dObject;
 
@@ -21,25 +21,25 @@ public class DRigidbody2D
 
         Mass = mass;
 
-        Velocity = Vector2.zero;
-        _force = Vector2.zero;
+        Velocity = Vector2Fix.Zero;
+        _force = Vector2Fix.Zero;
     }
 
-    public void AddForce(Vector2 force)
+    public void AddForce(Vector2Fix force)
     {
         if (!IsKinematic)
             _force += force;
     }
 
-    public void Transform(float deltaTime)
+    public void Transform(Fix64 deltaTime)
     {
         // 속도 = 가속도(= 힘/질량) * 시간
         Velocity += _force / Mass * deltaTime;
 
         // 위치 = 속도 * 시간
-        DObject.DTransform.Position += (Vector3)Velocity * deltaTime;
+        DObject.DTransform.Position += (Vector2Fix)Velocity * deltaTime;
 
         // 알짜힘 초기화
-        _force = Vector2.zero;
+        _force = Vector2Fix.Zero;
     }
 }

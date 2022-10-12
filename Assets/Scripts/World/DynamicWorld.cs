@@ -1,15 +1,15 @@
-using UnityEngine;
+using FixedMath;
 
 public class DynamicWorld : CollisionWorld
 {
-    Vector3 _gravity;
+    Vector2Fix _gravity;
 
-    public DynamicWorld(Vector3 gravity)
+    public DynamicWorld(Vector2Fix gravity)
     {
         _gravity = gravity;
     }
 
-    public override void Step(float deltaTime)
+    public override void Step(Fix64 deltaTime)
     {
         base.Step(deltaTime);
 
@@ -32,7 +32,7 @@ public class DynamicWorld : CollisionWorld
         }
     }
 
-    void Transform(float deltaTime)
+    void Transform(Fix64 deltaTime)
     {
         foreach (DObject dObject in _dObjectList)
             dObject.DRigidbody2D?.Transform(deltaTime);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FixedMath;
 
 public class DWorld
 {
@@ -14,7 +15,7 @@ public class DWorld
         _dObjectList.Remove(dObject);
     }
 
-    public virtual void Step(float deltaTime)
+    public virtual void Step(Fix64 deltaTime)
     {
         foreach (DObject dObject in _dObjectList)
             dObject.Step(deltaTime);

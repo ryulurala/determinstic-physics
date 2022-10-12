@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FixedMath;
 using UnityEngine;
 
 public class Demo : MonoBehaviour
@@ -10,18 +11,18 @@ public class Demo : MonoBehaviour
 
     public GameObject sphere;
 
-    public Vector3 Gravity = new Vector3(0f, -9.81f, 0f);
+    public Vector2 Gravity = new Vector3(0f, -9.81f);
 
     void Reset()
     {
-        Gravity = new Vector3(0f, -9.81f, 0f);
+        Gravity = new Vector2(0f, -9.81f);
     }
 
     void Awake()
     {
         Instance = this;
 
-        _dWorld = new DynamicWorld(Gravity);
+        _dWorld = new DynamicWorld((Vector2Fix)Gravity);
         if (_dWorld is CollisionWorld world)
         {
             world.AddSolver(new Position2DSolver());
@@ -30,23 +31,23 @@ public class Demo : MonoBehaviour
 
         {
             DObject dObject = new DObject();
-            dObject.DTransform.Position = Vector2.zero;
-            dObject.DCollider = new DCircleCollider2D(dObject, 0.5f, (collsionPoint, deltaTime) =>
+            dObject.DTransform.Position = Vector2Fix.Zero;
+            dObject.DCollider = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
             {
                 // Debug.Log($"A 충돌됨!");
             });
-            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, 1f);
+            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, Fix64.One);
 
             _dWorld.AddObject(dObject);
         }
         {
             DObject dObject = new DObject();
-            dObject.DTransform.Position = Vector2.zero;
-            dObject.DCollider = new DCircleCollider2D(dObject, 0.5f, (collsionPoint, deltaTime) =>
+            dObject.DTransform.Position = Vector2Fix.Zero;
+            dObject.DCollider = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
             {
                 // Debug.Log($"B 충돌됨!");
             });
-            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, 1f);
+            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, Fix64.One);
 
             _dWorld.AddObject(dObject);
         }
@@ -58,7 +59,7 @@ public class Demo : MonoBehaviour
 
     void FixedUpdate()
     {
-        _dWorld.Step(Time.deltaTime);
+        _dWorld.Step((Fix64)Time.deltaTime);
     }
 
     public GameObject CreateObject()

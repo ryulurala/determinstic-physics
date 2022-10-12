@@ -93,10 +93,10 @@ namespace FixedMath
             return v1;
         }
 
-        public static Vector2Fix operator *(Vector2Fix v, Fix64 f)
+        public static Vector2Fix operator *(Vector2Fix v, Fix64 fix)
         {
-            v.x *= f;
-            v.y *= f;
+            v.x *= fix;
+            v.y *= fix;
 
             return v;
         }
@@ -125,6 +125,14 @@ namespace FixedMath
             v1.y /= v2.y;
 
             return v1;
+        }
+
+        public static Vector2Fix operator /(Vector2Fix v, Fix64 fix)
+        {
+            v.x *= fix;
+            v.y *= fix;
+
+            return v;
         }
 
         public static Vector2Fix operator /(Vector2Fix v, int i)
@@ -202,6 +210,11 @@ namespace FixedMath
         #endregion
 
         #region Casting
+
+        public static explicit operator Vector2Fix(UnityEngine.Vector2 value)
+        {
+            return new Vector2Fix((Fix64)value.x, (Fix64)value.y);
+        }
 
         public static explicit operator UnityEngine.Vector2(Vector2Fix value)
         {

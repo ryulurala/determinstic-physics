@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using FixedMath;
 using UnityEngine;
 
 public class Impluse2DSolver : ISolver
 {
-    public void Solve(List<Manifold2D> collisionPoints, float deltaTime)
+    public void Solve(List<Manifold2D> collisionPoints, Fix64 deltaTime)
     {
         foreach (Manifold2D collision in collisionPoints)
         {
@@ -13,18 +14,18 @@ public class Impluse2DSolver : ISolver
             if (dObjectA.DRigidbody2D == null || dObjectB.DRigidbody2D == null)
                 continue;
 
-            Vector3 diffVelocity = dObjectB.DRigidbody2D.Velocity - dObjectA.DRigidbody2D.Velocity;
-            float velocityForce = Vector3.Dot(diffVelocity, collision.Normal);
+            Vector2Fix diffVelocity = dObjectB.DRigidbody2D.Velocity - dObjectA.DRigidbody2D.Velocity;
+            Fix64 velocityForce = Vector2Fix.Dot(diffVelocity, collision.Normal);
 
             // A negitive impulse would drive the objects closer together
-            if (velocityForce >= 0f)
+            if (velocityForce >= Fix64.Zero)
                 continue;
 
             // float forceMagnitude = bias - velocityForce / (dObjectA.DRigidbody.Mass + dObjectB.DRigidbody.Mass);
-            float forceMagnitude = velocityForce / (dObjectA.DRigidbody2D.Mass + dObjectB.DRigidbody2D.Mass);
-            forceMagnitude = forceMagnitude > 0f ? forceMagnitude : 0f;
+            Fix64 forceMagnitude = velocityForce / (dObjectA.DRigidbody2D.Mass + dObjectB.DRigidbody2D.Mass);
+            forceMagnitude = forceMagnitude > Fix64.Zero ? forceMagnitude : Fix64.Zero;
 
-            Vector2 force = forceMagnitude * collision.Normal;
+            Vector2Fix force = collision.Normal * forceMagnitude;
 
             dObjectA.DRigidbody2D.Velocity -= force * dObjectA.DRigidbody2D.Mass;
             dObjectB.DRigidbody2D.Velocity += force * dObjectB.DRigidbody2D.Mass;

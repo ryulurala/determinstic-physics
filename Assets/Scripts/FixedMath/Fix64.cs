@@ -18,7 +18,7 @@ namespace FixedMath
         public static readonly Fix64 One = new Fix64(ONE);
         public static readonly Fix64 Zero = new Fix64(0L);
 
-        static readonly Fix64 _onePointFive = One + (One >> 1);     // 1.5, for. InvSqrt
+        static readonly Fix64 _threehalfs = One + (One >> 1);     // 1.5, for. InvSqrt
 
         #region Constructors
 
@@ -71,12 +71,20 @@ namespace FixedMath
             return value == MinValue ? MinValue : new Fix64(-value._rawValue);
         }
 
+        static long AddOverflowHelper(long x, long y, ref bool overflow)
+        {
+            var sum = x + y;
+            // x + y overflows if sign(x) ^ sign(y) != sign(sum)
+            overflow |= ((x ^ y ^ sum) & long.MinValue) != 0;
+            return sum;
+        }
+
         public static Fix64 operator *(Fix64 a, Fix64 b)
         {
-#if !UNSAFE
-            if (b._rawValue > ONE && a._rawValue > 2147483647L / b._rawValue)
-                throw new OverflowException();
-#endif
+            // #if !UNSAFE
+            //             if (b._rawValue > ONE && a._rawValue > 2147483647L / b._rawValue)
+            //                 throw new OverflowException();
+            // #endif
             return new Fix64((a._rawValue * b._rawValue) >> SHIFT);
         }
 
@@ -238,7 +246,7 @@ namespace FixedMath
                 return Fix64.Zero;
 
             Fix64 result = value + Fix64.One >> 1;
-            for (uint i = 0; i < iterations; i++)
+            for (int i = 0; i < iterations; i++)
                 result = (result + (value / result)) >> 1;
 
             if (result._rawValue < 0)
@@ -252,15 +260,9 @@ namespace FixedMath
             return Sqrt(value, NSQRT);
         }
 
-        public static Fix64 InvSqrt(Fix64 value)
+        public static Fix64 InvSqrt(Fix64 value, int iterations = 0)
         {
-            Fix64 half = value >> 1;
-
-            Fix64 result = half;
-            for (ushort i = 0; i < NSQRT; i++)
-                result *= _onePointFive - half * result * result;
-
-            return result;
+            return One / Sqrt(value);
         }
 
         #endregion

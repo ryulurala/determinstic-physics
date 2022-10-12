@@ -1,18 +1,19 @@
+using FixedMath;
 using UnityEngine;
 
 public class DTransform
 {
     public Transform RenderTransform { get; set; }
 
-    Vector3 _position;
-    public Vector3 Position
+    Vector2Fix _position;
+    public Vector2Fix Position
     {
         get => _position;
         set
         {
             _position = value;
 
-            RenderTransform.position = _position;
+            RenderTransform.position = new Vector3((float)_position.x, (float)_position.y, 0f);
         }
     }
     public Vector3 Scale { get; set; }
@@ -32,7 +33,7 @@ public class DTransform
     public DTransform(Transform renderTransform)
     {
         RenderTransform = renderTransform;
-        _position = Vector3.zero;
+        _position = Vector2Fix.Zero;
         _quaternion = Quaternion.identity;
     }
 }

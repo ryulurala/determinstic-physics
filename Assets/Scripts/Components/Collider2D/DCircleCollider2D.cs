@@ -1,27 +1,27 @@
 using System;
-using UnityEngine;
+using FixedMath;
 
 public class DCircleCollider2D : DCollider2D
 {
-    public float Radius { get; set; }
-    public Vector2 Center { get; set; }
+    public Fix64 Radius { get; set; }
+    public Vector2Fix Center { get; set; }
 
-    public DCircleCollider2D(DObject dObject, float radius)
+    public DCircleCollider2D(DObject dObject, Fix64 radius)
     {
         DObject = dObject;
         Radius = radius;
 
-        Center = Vector2.zero;
+        Center = Vector2Fix.Zero;
     }
 
-    public DCircleCollider2D(DObject dObject, float radius, Action<Manifold2D, float> callback)
+    public DCircleCollider2D(DObject dObject, Fix64 radius, Action<Manifold2D, Fix64> callback)
     {
         DObject = dObject;
         Radius = radius;
 
         OnCollision = callback;
 
-        Center = Vector2.zero;
+        Center = Vector2Fix.Zero;
     }
 
     public override bool Intersect(DCollider2D other, out Manifold2D collisionPoint)
@@ -33,13 +33,13 @@ public class DCircleCollider2D : DCollider2D
     {
         collisionPoint = null;
 
-        float radiusDist = this.Radius + other.Radius;
+        Fix64 radiusDist = this.Radius + other.Radius;
 
-        Vector2 thisCenter = this.Center + (Vector2)this.DObject.DTransform.Position;
-        Vector2 otherCenter = other.Center + (Vector2)other.DObject.DTransform.Position;
+        Vector2Fix thisCenter = this.Center + (Vector2Fix)this.DObject.DTransform.Position;
+        Vector2Fix otherCenter = other.Center + (Vector2Fix)other.DObject.DTransform.Position;
 
-        Vector2 thisToOther = otherCenter - thisCenter;
-        float centerDist = thisToOther.magnitude;
+        Vector2Fix thisToOther = otherCenter - thisCenter;
+        Fix64 centerDist = thisToOther.Magnitude;
 
         if (centerDist > radiusDist)
             return false;
@@ -50,17 +50,17 @@ public class DCircleCollider2D : DCollider2D
             return true;
         }
 
-        Vector2 normal;
-        float penetration;
-        if (centerDist > 0f)
+        Vector2Fix normal;
+        Fix64 penetration;
+        if (centerDist > Fix64.Zero)
         {
             penetration = radiusDist - centerDist;
-            normal = thisToOther.normalized;
+            normal = thisToOther.Normalized;
         }
         else    // centerDist == 0
         {
             penetration = this.Radius;
-            normal = new Vector2(1f, 0f);
+            normal = new Vector2Fix(1, 0);
         }
 
         collisionPoint = new Manifold2D(this.DObject, other.DObject, normal, penetration);

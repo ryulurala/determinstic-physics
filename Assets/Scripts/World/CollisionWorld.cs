@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FixedMath;
 
 public class CollisionWorld : DWorld
 {
@@ -14,7 +15,7 @@ public class CollisionWorld : DWorld
         _solverList.Remove(solver);
     }
 
-    protected void ResolveCollisions(float deltaTime)
+    protected void ResolveCollisions(Fix64 deltaTime)
     {
         // Collision Detection
         List<Manifold2D> collisions = new List<Manifold2D>();
@@ -49,7 +50,7 @@ public class CollisionWorld : DWorld
 
     }
 
-    void SolvedCollisions(List<Manifold2D> collisionPoints, float deltaTime)
+    void SolvedCollisions(List<Manifold2D> collisionPoints, Fix64 deltaTime)
     {
         foreach (ISolver solver in _solverList)
         {
@@ -57,7 +58,7 @@ public class CollisionWorld : DWorld
         }
     }
 
-    void SendCollisionCallback(List<Manifold2D> collisionPoints, float deltaTime)
+    void SendCollisionCallback(List<Manifold2D> collisionPoints, Fix64 deltaTime)
     {
         foreach (Manifold2D collisionPoint in collisionPoints)
         {
