@@ -8,7 +8,7 @@ namespace Deterministic
         public GameObject RenderObject { get; set; }
         public DTransform DTransform { get; set; }
 
-        public DCollider2D DCollider { get; set; }
+        public DCollider2D DCollider2D { get; set; }
         public DRigidbody2D DRigidbody2D { get; set; }
 
         public DObject()

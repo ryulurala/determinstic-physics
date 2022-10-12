@@ -13,7 +13,7 @@ namespace Deterministic
             DObject = dObject;
             Radius = radius;
 
-            Center = Vector2Fix.Zero;
+            Center = Vector2Fix.zero;
         }
 
         public DCircleCollider2D(DObject dObject, Fix64 radius, Action<Manifold2D, Fix64> callback)
@@ -23,7 +23,7 @@ namespace Deterministic
 
             OnCollision = callback;
 
-            Center = Vector2Fix.Zero;
+            Center = Vector2Fix.zero;
         }
 
         public override bool Intersect(DCollider2D other, out Manifold2D collisionPoint)
@@ -41,7 +41,7 @@ namespace Deterministic
             Vector2Fix otherCenter = other.Center + (Vector2Fix)other.DObject.DTransform.Position;
 
             Vector2Fix thisToOther = otherCenter - thisCenter;
-            Fix64 centerDist = thisToOther.Magnitude;
+            Fix64 centerDist = thisToOther.magnitude;
 
             if (centerDist > radiusDist)
                 return false;
@@ -57,7 +57,7 @@ namespace Deterministic
             if (centerDist > Fix64.Zero)
             {
                 penetration = radiusDist - centerDist;
-                normal = thisToOther.Normalized;
+                normal = thisToOther.normalized;
             }
             else    // centerDist == 0
             {

@@ -35,7 +35,7 @@ namespace Deterministic
         public DTransform(Transform renderTransform)
         {
             RenderTransform = renderTransform;
-            _position = Vector2Fix.Zero;
+            _position = Vector2Fix.zero;
             _quaternion = Quaternion.identity;
         }
     }

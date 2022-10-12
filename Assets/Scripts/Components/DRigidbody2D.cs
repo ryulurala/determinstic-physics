@@ -23,8 +23,8 @@ namespace Deterministic
 
             Mass = mass;
 
-            Velocity = Vector2Fix.Zero;
-            _force = Vector2Fix.Zero;
+            Velocity = Vector2Fix.zero;
+            _force = Vector2Fix.zero;
         }
 
         public void AddForce(Vector2Fix force)
@@ -42,7 +42,7 @@ namespace Deterministic
             DObject.DTransform.Position += (Vector2Fix)Velocity * deltaTime;
 
             // 알짜힘 초기화
-            _force = Vector2Fix.Zero;
+            _force = Vector2Fix.zero;
         }
     }
 }

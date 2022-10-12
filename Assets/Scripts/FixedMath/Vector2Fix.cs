@@ -7,18 +7,18 @@ namespace FixedMath
         public Fix64 x;
         public Fix64 y;
 
-        public static Vector2Fix Zero { get; } = new Vector2Fix(0, 0);
-        public static Vector2Fix One { get; } = new Vector2Fix(1, 1);
+        public static Vector2Fix zero { get; } = new Vector2Fix(0, 0);
+        public static Vector2Fix one { get; } = new Vector2Fix(1, 1);
 
-        public static Vector2Fix Up { get; } = new Vector2Fix(0, 1);
-        public static Vector2Fix Down { get; } = new Vector2Fix(0, -1);
-        public static Vector2Fix Left { get; } = new Vector2Fix(-1, 0);
-        public static Vector2Fix Right { get; } = new Vector2Fix(1, 0);
+        public static Vector2Fix up { get; } = new Vector2Fix(0, 1);
+        public static Vector2Fix down { get; } = new Vector2Fix(0, -1);
+        public static Vector2Fix left { get; } = new Vector2Fix(-1, 0);
+        public static Vector2Fix right { get; } = new Vector2Fix(1, 0);
 
-        public Fix64 SqrtMagnitude { get => DistanceSquared(this, Zero); }
-        public Fix64 Magnitude { get => Fix64.Sqrt(SqrtMagnitude); }
+        public Fix64 sqrtMagnitude { get => DistanceSquared(this, zero); }
+        public Fix64 magnitude { get => Fix64.Sqrt(sqrtMagnitude); }
 
-        public Vector2Fix Normalized
+        public Vector2Fix normalized
         {
             get
             {
@@ -35,6 +35,12 @@ namespace FixedMath
         {
             this.x = x;
             this.y = y;
+        }
+
+        public Vector2Fix(float x, float y)
+        {
+            this.x = (Fix64)x;
+            this.y = (Fix64)y;
         }
 
         public Vector2Fix(int x, int y)
@@ -174,7 +180,7 @@ namespace FixedMath
 
         public void Normalize()
         {
-            Fix64 sqrMag = SqrtMagnitude;
+            Fix64 sqrMag = sqrtMagnitude;
             Fix64 invMag = (sqrMag > Fix64.Zero) ? Fix64.InvSqrt(sqrMag) : Fix64.Zero;
 
             x *= invMag;

@@ -32,8 +32,8 @@ public class Demo : MonoBehaviour
 
         {
             DObject dObject = new DObject();
-            dObject.DTransform.Position = Vector2Fix.Zero;
-            dObject.DCollider = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
+            dObject.DTransform.Position = Vector2Fix.zero;
+            dObject.DCollider2D = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
             {
                 // Debug.Log($"A 충돌됨!");
             });
@@ -43,8 +43,8 @@ public class Demo : MonoBehaviour
         }
         {
             DObject dObject = new DObject();
-            dObject.DTransform.Position = Vector2Fix.Zero;
-            dObject.DCollider = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
+            dObject.DTransform.Position = Vector2Fix.zero;
+            dObject.DCollider2D = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
             {
                 // Debug.Log($"B 충돌됨!");
             });

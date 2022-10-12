@@ -16,7 +16,7 @@ namespace Deterministic
             DObjectA = dObjectA;
             DObjectB = dObjectB;
 
-            Normal = Vector2Fix.Zero;
+            Normal = Vector2Fix.zero;
             Penetration = Fix64.Zero;
         }
 

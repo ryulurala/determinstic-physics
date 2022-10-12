@@ -29,13 +29,13 @@ namespace Deterministic
                 {
                     if (dObjectA == dObjectB)
                         break;
-                    else if (dObjectA.DCollider == null || dObjectB.DCollider == null)
+                    else if (dObjectA.DCollider2D == null || dObjectB.DCollider2D == null)
                         continue;
 
                     Manifold2D collisionPoint;
-                    if (dObjectA.DCollider.Intersect(dObjectB.DCollider, out collisionPoint))
+                    if (dObjectA.DCollider2D.Intersect(dObjectB.DCollider2D, out collisionPoint))
                     {
-                        if (dObjectA.DCollider.IsTrigger || dObjectB.DCollider.IsTrigger)
+                        if (dObjectA.DCollider2D.IsTrigger || dObjectB.DCollider2D.IsTrigger)
                             triggers.Add(collisionPoint);
                         else
                             collisions.Add(collisionPoint);
@@ -64,8 +64,8 @@ namespace Deterministic
         {
             foreach (Manifold2D collisionPoint in collisionPoints)
             {
-                collisionPoint.DObjectA.DCollider.OnCollision?.Invoke(collisionPoint, deltaTime);
-                collisionPoint.DObjectB.DCollider.OnCollision?.Invoke(collisionPoint, deltaTime);
+                collisionPoint.DObjectA.DCollider2D.OnCollision?.Invoke(collisionPoint, deltaTime);
+                collisionPoint.DObjectB.DCollider2D.OnCollision?.Invoke(collisionPoint, deltaTime);
             }
         }
     }
