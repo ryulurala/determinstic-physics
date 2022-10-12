@@ -1,45 +1,48 @@
 using FixedMath;
 
-public class DRigidbody2D
+namespace Deterministic
 {
-    public DObject DObject { get; private set; }
-
-    public bool IsKinematic { get; set; }
-    public bool UseGravity { get; set; }
-
-    public Fix64 Mass { get; set; }
-
-    public Vector2Fix Velocity { get; set; }
-    Vector2Fix _force;
-
-    public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, Fix64 mass)
+    public class DRigidbody2D
     {
-        DObject = dObject;
+        public DObject DObject { get; private set; }
 
-        IsKinematic = isKinematic;
-        UseGravity = useGravity;
+        public bool IsKinematic { get; set; }
+        public bool UseGravity { get; set; }
 
-        Mass = mass;
+        public Fix64 Mass { get; set; }
 
-        Velocity = Vector2Fix.Zero;
-        _force = Vector2Fix.Zero;
-    }
+        public Vector2Fix Velocity { get; set; }
+        Vector2Fix _force;
 
-    public void AddForce(Vector2Fix force)
-    {
-        if (!IsKinematic)
-            _force += force;
-    }
+        public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, Fix64 mass)
+        {
+            DObject = dObject;
 
-    public void Transform(Fix64 deltaTime)
-    {
-        // 속도 = 가속도(= 힘/질량) * 시간
-        Velocity += _force / Mass * deltaTime;
+            IsKinematic = isKinematic;
+            UseGravity = useGravity;
 
-        // 위치 = 속도 * 시간
-        DObject.DTransform.Position += (Vector2Fix)Velocity * deltaTime;
+            Mass = mass;
 
-        // 알짜힘 초기화
-        _force = Vector2Fix.Zero;
+            Velocity = Vector2Fix.Zero;
+            _force = Vector2Fix.Zero;
+        }
+
+        public void AddForce(Vector2Fix force)
+        {
+            if (!IsKinematic)
+                _force += force;
+        }
+
+        public void Transform(Fix64 deltaTime)
+        {
+            // 속도 = 가속도(= 힘/질량) * 시간
+            Velocity += _force / Mass * deltaTime;
+
+            // 위치 = 속도 * 시간
+            DObject.DTransform.Position += (Vector2Fix)Velocity * deltaTime;
+
+            // 알짜힘 초기화
+            _force = Vector2Fix.Zero;
+        }
     }
 }

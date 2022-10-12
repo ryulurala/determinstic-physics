@@ -1,40 +1,43 @@
 using FixedMath;
 
-public class DynamicWorld : CollisionWorld
+namespace Deterministic
 {
-    Vector2Fix _gravity;
-
-    public DynamicWorld(Vector2Fix gravity)
+    public class DynamicWorld : CollisionWorld
     {
-        _gravity = gravity;
-    }
+        Vector2Fix _gravity;
 
-    public override void Step(Fix64 deltaTime)
-    {
-        base.Step(deltaTime);
-
-        // Gravity, Drag
-        ApplyForces();
-        // Collision
-        ResolveCollisions(deltaTime);
-        // Transform
-        Transform(deltaTime);
-    }
-
-    void ApplyForces()
-    {
-        foreach (DObject dObject in _dObjectList)
+        public DynamicWorld(Vector2Fix gravity)
         {
-            if (dObject.DRigidbody2D == null)
-                continue;
-            else if (dObject.DRigidbody2D.UseGravity)
-                dObject.DRigidbody2D.AddForce(_gravity * dObject.DRigidbody2D.Mass);    // Gravity
+            _gravity = gravity;
         }
-    }
 
-    void Transform(Fix64 deltaTime)
-    {
-        foreach (DObject dObject in _dObjectList)
-            dObject.DRigidbody2D?.Transform(deltaTime);
+        public override void Step(Fix64 deltaTime)
+        {
+            base.Step(deltaTime);
+
+            // Gravity, Drag
+            ApplyForces();
+            // Collision
+            ResolveCollisions(deltaTime);
+            // Transform
+            Transform(deltaTime);
+        }
+
+        void ApplyForces()
+        {
+            foreach (DObject dObject in _dObjectList)
+            {
+                if (dObject.DRigidbody2D == null)
+                    continue;
+                else if (dObject.DRigidbody2D.UseGravity)
+                    dObject.DRigidbody2D.AddForce(_gravity * dObject.DRigidbody2D.Mass);    // Gravity
+            }
+        }
+
+        void Transform(Fix64 deltaTime)
+        {
+            foreach (DObject dObject in _dObjectList)
+                dObject.DRigidbody2D?.Transform(deltaTime);
+        }
     }
 }

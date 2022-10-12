@@ -1,39 +1,42 @@
 using FixedMath;
 using UnityEngine;
 
-public class DTransform
+namespace Deterministic
 {
-    public Transform RenderTransform { get; set; }
-
-    Vector2Fix _position;
-    public Vector2Fix Position
+    public class DTransform
     {
-        get => _position;
-        set
+        public Transform RenderTransform { get; set; }
+
+        Vector2Fix _position;
+        public Vector2Fix Position
         {
-            _position = value;
+            get => _position;
+            set
+            {
+                _position = value;
 
-            RenderTransform.position = new Vector3((float)_position.x, (float)_position.y, 0f);
+                RenderTransform.position = new Vector3((float)_position.x, (float)_position.y, 0f);
+            }
         }
-    }
-    public Vector3 Scale { get; set; }
+        public Vector3 Scale { get; set; }
 
-    Quaternion _quaternion;
-    public Quaternion Rotation
-    {
-        get => _quaternion;
-        set
+        Quaternion _quaternion;
+        public Quaternion Rotation
         {
-            _quaternion = value;
+            get => _quaternion;
+            set
+            {
+                _quaternion = value;
 
-            RenderTransform.rotation = _quaternion;
+                RenderTransform.rotation = _quaternion;
+            }
         }
-    }
 
-    public DTransform(Transform renderTransform)
-    {
-        RenderTransform = renderTransform;
-        _position = Vector2Fix.Zero;
-        _quaternion = Quaternion.identity;
+        public DTransform(Transform renderTransform)
+        {
+            RenderTransform = renderTransform;
+            _position = Vector2Fix.Zero;
+            _quaternion = Quaternion.identity;
+        }
     }
 }

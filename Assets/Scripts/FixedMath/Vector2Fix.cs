@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace FixedMath
 {
     public struct Vector2Fix
@@ -41,7 +43,7 @@ namespace FixedMath
             this.y = (Fix64)y;
         }
 
-        public Vector2Fix(UnityEngine.Vector2 v)
+        public Vector2Fix(Vector2 v)
         {
             x = (Fix64)v.x;
             y = (Fix64)v.y;
@@ -211,14 +213,14 @@ namespace FixedMath
 
         #region Casting
 
-        public static explicit operator Vector2Fix(UnityEngine.Vector2 value)
+        public static explicit operator Vector2Fix(Vector2 value)
         {
             return new Vector2Fix((Fix64)value.x, (Fix64)value.y);
         }
 
-        public static explicit operator UnityEngine.Vector2(Vector2Fix value)
+        public static explicit operator Vector2(Vector2Fix value)
         {
-            return new UnityEngine.Vector2((float)value.x, (float)value.y);
+            return new Vector2((float)value.x, (float)value.y);
         }
 
         #endregion
