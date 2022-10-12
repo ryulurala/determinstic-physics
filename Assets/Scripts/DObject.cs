@@ -14,7 +14,7 @@ namespace Deterministic
         public DObject()
         {
             RenderObject = Demo.Instance.CreateObject();
-            DTransform = new DTransform(RenderObject.transform);
+            DTransform = new DTransform(this) { RenderTransform = RenderObject.transform };
         }
 
         public void Step(Fix64 deltaTime)

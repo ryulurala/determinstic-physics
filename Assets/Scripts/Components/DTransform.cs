@@ -5,9 +5,11 @@ namespace Deterministic
 {
     public class DTransform
     {
+        public DObject DObject { get; set; }
+
         public Transform RenderTransform { get; set; }
 
-        Vector2Fix _position;
+        Vector2Fix _position = Vector2Fix.zero;
         public Vector2Fix Position
         {
             get => _position;
@@ -18,25 +20,10 @@ namespace Deterministic
                 RenderTransform.position = new Vector3((float)_position.x, (float)_position.y, 0f);
             }
         }
-        public Vector3 Scale { get; set; }
 
-        Quaternion _quaternion;
-        public Quaternion Rotation
+        public DTransform(DObject dObject)
         {
-            get => _quaternion;
-            set
-            {
-                _quaternion = value;
-
-                RenderTransform.rotation = _quaternion;
-            }
-        }
-
-        public DTransform(Transform renderTransform)
-        {
-            RenderTransform = renderTransform;
-            _position = Vector2Fix.zero;
-            _quaternion = Quaternion.identity;
+            DObject = dObject;
         }
     }
 }
