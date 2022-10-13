@@ -7,6 +7,20 @@ namespace Deterministic
     {
         List<ISolver> _solverList = new List<ISolver>();
 
+        public CollisionWorld(ISolver[] solvers = null)
+        {
+            if (solvers != null)
+                _solverList.AddRange(solvers);
+        }
+
+        public override void Step(Fix64 deltaTime)
+        {
+            base.Step(deltaTime);
+
+            // Collision
+            ResolveCollisions(deltaTime);
+        }
+
         public void AddSolver(ISolver solver)
         {
             _solverList.Add(solver);

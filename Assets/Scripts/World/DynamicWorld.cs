@@ -6,7 +6,7 @@ namespace Deterministic
     {
         Vector2Fix _gravity;
 
-        public DynamicWorld(Vector2Fix gravity)
+        public DynamicWorld(Vector2Fix gravity, ISolver[] solvers = null) : base(solvers)
         {
             _gravity = gravity;
         }
@@ -15,10 +15,8 @@ namespace Deterministic
         {
             base.Step(deltaTime);
 
-            // Gravity, Drag
+            // Gravity
             ApplyForces();
-            // Collision
-            ResolveCollisions(deltaTime);
             // Transform
             Transform(deltaTime);
         }

@@ -23,12 +23,7 @@ public class Demo : MonoBehaviour
     {
         Instance = this;
 
-        _dWorld = new DynamicWorld((Vector2Fix)Gravity);
-        if (_dWorld is CollisionWorld world)
-        {
-            world.AddSolver(new Position2DSolver());
-            world.AddSolver(new Impluse2DSolver());
-        }
+        _dWorld = new DynamicWorld((Vector2Fix)Gravity, new ISolver[] { new Position2DSolver(), new Impluse2DSolver() });
 
         {
             DObject dObject = new DObject();
