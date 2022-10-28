@@ -9,13 +9,13 @@ namespace Deterministic
         {
             foreach (Manifold2D collision in collisionPoints)
             {
-                DObject dObjectA = collision.DObjectA;
-                DObject dObjectB = collision.DObjectB;
+                DObject other = collision.Other;
+                DObject self = collision.Self;
 
                 Vector2Fix resolution = collision.Normal * collision.Penetration;
 
-                dObjectA.DTransform.Position -= resolution;
-                dObjectB.DTransform.Position += resolution;
+                other.DTransform.Position -= resolution;
+                self.DTransform.Position += resolution;
             }
         }
     }

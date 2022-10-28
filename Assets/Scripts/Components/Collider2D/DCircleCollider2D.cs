@@ -37,8 +37,8 @@ namespace Deterministic
 
             Fix64 radiusDist = this.Radius + other.Radius;
 
-            Vector2Fix thisCenter = this.Center + (Vector2Fix)this.DObject.DTransform.Position;
             Vector2Fix otherCenter = other.Center + (Vector2Fix)other.DObject.DTransform.Position;
+            Vector2Fix thisCenter = this.Center + (Vector2Fix)this.DObject.DTransform.Position;
 
             Vector2Fix thisToOther = otherCenter - thisCenter;
             Fix64 centerDist = thisToOther.magnitude;

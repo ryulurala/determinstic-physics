@@ -78,8 +78,8 @@ namespace Deterministic
         {
             foreach (Manifold2D collisionPoint in collisionPoints)
             {
-                collisionPoint.DObjectA.DCollider2D.OnCollision?.Invoke(collisionPoint, deltaTime);
-                collisionPoint.DObjectB.DCollider2D.OnCollision?.Invoke(collisionPoint, deltaTime);
+                collisionPoint.Other.DCollider2D.OnCollision?.Invoke(collisionPoint, deltaTime);
+                collisionPoint.Self.DCollider2D.OnCollision?.Invoke(collisionPoint, deltaTime);
             }
         }
     }
