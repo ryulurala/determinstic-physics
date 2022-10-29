@@ -12,7 +12,8 @@ namespace Deterministic
                 DObject other = collision.Other;
                 DObject self = collision.Self;
 
-                Vector2Fix resolution = collision.Normal * collision.Penetration;
+                Vector2Fix resolution = collision.Normal * collision.Penetration * (Fix64)0.5f;
+                UnityEngine.Debug.Log($"resolution: {resolution.x}, {resolution.y}");
 
                 other.DTransform.Position -= resolution;
                 self.DTransform.Position += resolution;

@@ -14,6 +14,8 @@ namespace Deterministic
 
         public Vector2Fix Position { get; set; }
 
+        public Fix64 Angle { get; set; }        // Z축 회전 값
+
         public DTransform(DObject dObject)
         {
             DObject = dObject;

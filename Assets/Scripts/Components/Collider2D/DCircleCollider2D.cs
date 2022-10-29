@@ -56,7 +56,7 @@ namespace Deterministic
             }
             else    // centerDist == 0
             {
-                penetration = this.Radius;
+                penetration = this.Radius > other.Radius ? this.Radius + this.Radius : other.Radius + other.Radius;
                 normal = new Vector2Fix(1, 0);
             }
 
@@ -67,7 +67,56 @@ namespace Deterministic
 
         public override bool Intersect(DBoxCollider2D other, out Manifold2D collisionPoint)
         {
-            throw new NotImplementedException();
+            collisionPoint = null;
+
+            // Vector2Fix circleCenter = this.DObject.DTransform.Position;
+            // Fix64 radius = this.Radius;
+
+            // Vector2Fix rectCenter = other.DObject.DTransform.Position;
+            // Fix64 rectAngle = other.DObject.DTransform.Angle;
+
+            // Fix64 cosTheta = (Fix64)MathF.Cos((float)rectAngle);
+            // Fix64 sinTheta = (Fix64)MathF.Sin((float)rectAngle);
+            // Vector2Fix rotatedCircleCenter = new Vector2Fix(
+            //     cosTheta * (circleCenter.x - rectCenter.x) - sinTheta * (circleCenter.y - rectCenter.y) + rectCenter.x,
+            //     sinTheta * (circleCenter.x - rectCenter.x) + cosTheta * (circleCenter.y - rectCenter.y) + rectCenter.y
+            //     );
+
+            // Fix64 cx, cy;
+            // if (rotatedCircleCenter.x < rectCenter.x)
+            // {
+            //     cx = rectCenter.x;
+            // }
+
+
+
+            // if (rotateCircleX < rect.x) {
+            // 	cx = rect.x
+            // } else if (rotateCircleX > rect.x + rect.w) {
+            // 	cx = rect.x + rect.w
+            // } else {
+            // 	cx = rotateCircleX
+            // }
+
+            // if (rotateCircleY < rect.y) {
+            // 	cy = rect.y
+            // } else if (rotateCircleY > rect.y + rect.h) {
+            // 	cy = rect.y + rect.h
+            // } else {
+            // 	cy = rotateCircleY
+            // }
+            // console.log('rotateCircleX', rotateCircleX)
+            // console.log('rotateCircleY', rotateCircleY)
+            // console.log('cx', cx)
+            // console.log('cy', cy)
+            // console.log(distance(rotateCircleX, rotateCircleY, cx, cy))
+            // if (distance(rotateCircleX, rotateCircleY, cx, cy) < circle.r) {
+            // 	return true
+            // }
+
+            // return false
+
+            return false;
         }
     }
 }

@@ -42,12 +42,12 @@ public class Demo : MonoBehaviour
         // Cube
         {
             DCube cube = _dWorld.SpawnObject<DCube>();
-            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(0.5f, 0.5f), (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
+            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(1f, 1f), (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
             cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
         }
         {
             DCube cube = _dWorld.SpawnObject<DCube>();
-            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(0.5f, 0.5f), (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
+            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(1f, 1f), (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
             cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
         }
     }

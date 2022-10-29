@@ -124,12 +124,12 @@ namespace Deterministic
                 projectedThisY = Fix64.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
 
                 normal = thisToOther.normalized;
-                penetration = projectedCenterToCenter - projectedOtherX + projectedOtherY + projectedThisX + projectedThisY;
+                penetration = projectedCenterToCenter - (projectedOtherX + projectedOtherY + projectedThisX + projectedThisY);
             }
             else
             {
                 normal = new Vector2Fix(1, 0);
-                penetration = other.Size.y > this.Size.y ? other.Size.y : this.Size.y;
+                penetration = other.Size.x > this.Size.x ? other.Size.x : this.Size.x;
             }
 
             collisionPoint = new Manifold2D(this.DObject, other.DObject, normal, penetration);
