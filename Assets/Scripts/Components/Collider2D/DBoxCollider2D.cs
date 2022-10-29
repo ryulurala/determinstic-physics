@@ -28,7 +28,63 @@ namespace Deterministic
 
         public override bool Intersect(DCircleCollider2D other, out Manifold2D collisionPoint)
         {
-            throw new NotImplementedException();
+            collisionPoint = null;
+
+            Vector2Fix circleCenter = other.DObject.DTransform.Position;
+            Fix64 radius = other.Radius;
+
+            Vector2Fix rectCenter = this.DObject.DTransform.Position;
+            Fix64 rectHalfWidth = this.Size.x * (Fix64)0.5f;
+            Fix64 rectHalfHeight = this.Size.y * (Fix64)0.5f;
+            Fix64 rectAngle = this.DObject.DTransform.Angle;
+
+            Fix64 cosTheta = (Fix64)MathF.Cos((float)rectAngle);
+            Fix64 sinTheta = (Fix64)MathF.Sin((float)rectAngle);
+            Vector2Fix rotatedCircleCenter = new Vector2Fix(
+                cosTheta * (circleCenter.x - rectCenter.x) - sinTheta * (circleCenter.y - rectCenter.y) + rectCenter.x,
+                sinTheta * (circleCenter.x - rectCenter.x) + cosTheta * (circleCenter.y - rectCenter.y) + rectCenter.y
+                );
+
+            Fix64 closestX;
+            if (rotatedCircleCenter.x < rectCenter.x - rectHalfWidth)
+                closestX = rectCenter.x - rectHalfWidth;
+            else if (rotatedCircleCenter.x > rectCenter.x + rectHalfWidth)
+                closestX = rectCenter.x + rectHalfWidth;
+            else
+                closestX = rotatedCircleCenter.x;
+
+            Fix64 closestY;
+            if (rotatedCircleCenter.y < rectCenter.y - rectHalfHeight)
+                closestY = rectCenter.y - rectHalfHeight;
+            else if (rotatedCircleCenter.y > rectCenter.y + rectHalfHeight)
+                closestY = rectCenter.y + rectHalfHeight;
+            else
+                closestY = rotatedCircleCenter.y;
+
+            Fix64 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
+            if (dist < radius)
+            {
+                Vector2Fix thisToOther = circleCenter - rectCenter;
+
+                Vector2Fix normal;
+                Fix64 penetration;
+                if (thisToOther.magnitude > Fix64.Zero)
+                {
+                    normal = thisToOther.normalized;
+                    penetration = dist;
+                }
+                else
+                {
+                    normal = Vector2Fix.right;
+                    penetration = radius > rectHalfWidth ? radius + radius : rectHalfWidth + rectHalfWidth;
+                }
+
+                collisionPoint = new Manifold2D(other.DObject, this.DObject, normal, penetration);
+
+                return true;
+            }
+            else
+                return false;
         }
 
         public override bool Intersect(DBoxCollider2D other, out Manifold2D collisionPoint)

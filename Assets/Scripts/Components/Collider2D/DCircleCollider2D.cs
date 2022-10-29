@@ -69,54 +69,61 @@ namespace Deterministic
         {
             collisionPoint = null;
 
-            // Vector2Fix circleCenter = this.DObject.DTransform.Position;
-            // Fix64 radius = this.Radius;
+            Vector2Fix circleCenter = this.DObject.DTransform.Position;
+            Fix64 radius = this.Radius;
 
-            // Vector2Fix rectCenter = other.DObject.DTransform.Position;
-            // Fix64 rectAngle = other.DObject.DTransform.Angle;
+            Vector2Fix rectCenter = other.DObject.DTransform.Position;
+            Fix64 rectHalfWidth = other.Size.x * (Fix64)0.5f;
+            Fix64 rectHalfHeight = other.Size.y * (Fix64)0.5f;
+            Fix64 rectAngle = other.DObject.DTransform.Angle;
 
-            // Fix64 cosTheta = (Fix64)MathF.Cos((float)rectAngle);
-            // Fix64 sinTheta = (Fix64)MathF.Sin((float)rectAngle);
-            // Vector2Fix rotatedCircleCenter = new Vector2Fix(
-            //     cosTheta * (circleCenter.x - rectCenter.x) - sinTheta * (circleCenter.y - rectCenter.y) + rectCenter.x,
-            //     sinTheta * (circleCenter.x - rectCenter.x) + cosTheta * (circleCenter.y - rectCenter.y) + rectCenter.y
-            //     );
+            Fix64 cosTheta = (Fix64)MathF.Cos((float)rectAngle);
+            Fix64 sinTheta = (Fix64)MathF.Sin((float)rectAngle);
+            Vector2Fix rotatedCircleCenter = new Vector2Fix(
+                cosTheta * (circleCenter.x - rectCenter.x) - sinTheta * (circleCenter.y - rectCenter.y) + rectCenter.x,
+                sinTheta * (circleCenter.x - rectCenter.x) + cosTheta * (circleCenter.y - rectCenter.y) + rectCenter.y
+                );
 
-            // Fix64 cx, cy;
-            // if (rotatedCircleCenter.x < rectCenter.x)
-            // {
-            //     cx = rectCenter.x;
-            // }
+            Fix64 closestX;
+            if (rotatedCircleCenter.x < rectCenter.x - rectHalfWidth)
+                closestX = rectCenter.x - rectHalfWidth;
+            else if (rotatedCircleCenter.x > rectCenter.x + rectHalfWidth)
+                closestX = rectCenter.x + rectHalfWidth;
+            else
+                closestX = rotatedCircleCenter.x;
 
+            Fix64 closestY;
+            if (rotatedCircleCenter.y < rectCenter.y - rectHalfHeight)
+                closestY = rectCenter.y - rectHalfHeight;
+            else if (rotatedCircleCenter.y > rectCenter.y + rectHalfHeight)
+                closestY = rectCenter.y + rectHalfHeight;
+            else
+                closestY = rotatedCircleCenter.y;
 
+            Fix64 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
+            if (dist < radius)
+            {
+                Vector2Fix thisToOther = rectCenter - circleCenter;
 
-            // if (rotateCircleX < rect.x) {
-            // 	cx = rect.x
-            // } else if (rotateCircleX > rect.x + rect.w) {
-            // 	cx = rect.x + rect.w
-            // } else {
-            // 	cx = rotateCircleX
-            // }
+                Vector2Fix normal;
+                Fix64 penetration;
+                if (thisToOther.magnitude > Fix64.Zero)
+                {
+                    normal = thisToOther.normalized;
+                    penetration = dist;
+                }
+                else
+                {
+                    normal = Vector2Fix.right;
+                    penetration = radius > rectHalfWidth ? radius + radius : rectHalfWidth + rectHalfWidth;
+                }
 
-            // if (rotateCircleY < rect.y) {
-            // 	cy = rect.y
-            // } else if (rotateCircleY > rect.y + rect.h) {
-            // 	cy = rect.y + rect.h
-            // } else {
-            // 	cy = rotateCircleY
-            // }
-            // console.log('rotateCircleX', rotateCircleX)
-            // console.log('rotateCircleY', rotateCircleY)
-            // console.log('cx', cx)
-            // console.log('cy', cy)
-            // console.log(distance(rotateCircleX, rotateCircleY, cx, cy))
-            // if (distance(rotateCircleX, rotateCircleY, cx, cy) < circle.r) {
-            // 	return true
-            // }
+                collisionPoint = new Manifold2D(other.DObject, this.DObject, normal, penetration);
 
-            // return false
-
-            return false;
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
