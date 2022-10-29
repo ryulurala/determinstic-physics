@@ -22,5 +22,21 @@ namespace Deterministic
             foreach (DObject dObject in _dObjectList)
                 dObject.Step(deltaTime);
         }
+
+        public T SpawnObject<T>() where T : DObject, new()
+        {
+            return SpawnObject<T>(Vector2Fix.zero);
+        }
+
+        public T SpawnObject<T>(Vector2Fix position) where T : DObject, new()
+        {
+            T t = new T();
+            t.DTransform.Position = position;
+            t.DTransform.Snap();
+
+            AddObject(t);
+
+            return t;
+        }
     }
 }

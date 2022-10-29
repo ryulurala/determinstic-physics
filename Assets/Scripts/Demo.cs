@@ -25,53 +25,30 @@ public class Demo : MonoBehaviour
         Instance = this;
 
         _dWorld = new DynamicWorld((Vector2Fix)Gravity, new ISolver[] { new Position2DSolver(), new Impluse2DSolver() });
-
-        // 원
+        // Sphere
         // {
-        //     DObject dObject = new DObject();
-        //     dObject.DTransform.Position = Vector2Fix.zero;
-        //     dObject.DCollider2D = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
-        //     {
-        //         // Debug.Log($"A 충돌됨!");
-        //     });
-        //     dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, Fix64.One);
+        //     DSphere sphere = _dWorld.SpawnObject<DSphere>();
 
-        //     _dWorld.AddObject(dObject);
+        //     sphere.DCollider2D = new DCircleCollider2D(sphere, (Fix64)0.5f, (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
+        //     sphere.DRigidbody2D = new DRigidbody2D(sphere, isKinematic: false, useGravity: true, Fix64.One);
         // }
         // {
-        //     DObject dObject = new DObject();
-        //     dObject.DTransform.Position = Vector2Fix.zero;
-        //     dObject.DCollider2D = new DCircleCollider2D(dObject, (Fix64)0.5f, (collsionPoint, deltaTime) =>
-        //     {
-        //         // Debug.Log($"B 충돌됨!");
-        //     });
-        //     dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, Fix64.One);
+        //     DSphere sphere = _dWorld.SpawnObject<DSphere>();
 
-        //     _dWorld.AddObject(dObject);
+        //     sphere.DCollider2D = new DCircleCollider2D(sphere, (Fix64)0.5f, (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
+        //     sphere.DRigidbody2D = new DRigidbody2D(sphere, isKinematic: false, useGravity: true, Fix64.One);
         // }
 
-        // 사각형
+        // Cube
         {
-            DObject dObject = new DObject("Cube");
-            dObject.DTransform.Position = Vector2Fix.zero;
-            dObject.DCollider2D = new DBoxCollider2D(dObject, new Vector2Fix(0.5f, 0.5f), (collsionPoint, deltaTime) =>
-            {
-                // Debug.Log($"A 충돌됨!");
-            });
-            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, Fix64.One);
-
-            _dWorld.AddObject(dObject);
+            DCube cube = _dWorld.SpawnObject<DCube>();
+            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(0.5f, 0.5f), (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
+            cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
         }
         {
-            DObject dObject = new DObject("Cube");
-            dObject.DTransform.Position = Vector2Fix.zero;
-            dObject.DCollider2D = new DBoxCollider2D(dObject, new Vector2Fix(0.5f, 0.5f), (collsionPoint, deltaTime) =>
-            {
-                // Debug.Log($"B 충돌됨!");
-            });
-            dObject.DRigidbody2D = new DRigidbody2D(dObject, isKinematic: false, useGravity: true, Fix64.One);
-
-            _dWorld.AddObject(dObject);
+            DCube cube = _dWorld.SpawnObject<DCube>();
+            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(0.5f, 0.5f), (collsionPoint, deltaTime) => Debug.Log($"A 충돌됨!"));
+            cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
         }
     }
 
@@ -84,15 +61,21 @@ public class Demo : MonoBehaviour
         _dWorld.Step((Fix64)Time.deltaTime);
     }
 
-    public GameObject CreateObject(string shape)
+    public T CreateObject<T>() where T : Component
     {
-        string upper = shape.ToUpper();
+        GameObject go = null;
+        if (typeof(T) == typeof(SphereEx))
+            go = Instantiate(SpherePrefab);
+        else if (typeof(T) == typeof(CubeEx))
+            go = Instantiate(CubePrefab);
 
-        if (upper == "SPHERE")
-            return Instantiate(SpherePrefab);
-        else if (upper == "CUBE")
-            return Instantiate(CubePrefab);
-        else
+        if (go == null)
             return null;
+
+        T t = go.GetComponent<T>();
+        if (t == null)
+            t = go.AddComponent<T>();
+
+        return t;
     }
 }
