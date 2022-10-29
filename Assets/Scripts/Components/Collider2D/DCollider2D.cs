@@ -13,5 +13,6 @@ namespace Deterministic
 
         public abstract bool Intersect(DCollider2D other, out Manifold2D collisionPoint);
         public abstract bool Intersect(DCircleCollider2D other, out Manifold2D collisionPoint);
+        public abstract bool Intersect(DBoxCollider2D other, out Manifold2D collisionPoint);
     }
 }

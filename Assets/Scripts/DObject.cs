@@ -11,9 +11,9 @@ namespace Deterministic
         public DCollider2D DCollider2D { get; set; }
         public DRigidbody2D DRigidbody2D { get; set; }
 
-        public DObject()
+        public DObject(string shape)
         {
-            RenderObject = Demo.Instance.CreateObject();
+            RenderObject = Demo.Instance.CreateObject(shape);
             DTransform = new DTransform(this) { RenderTransform = RenderObject.transform };
         }
 

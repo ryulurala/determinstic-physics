@@ -345,5 +345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45fd024a23805483e99db23aa400dfcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphere: {fileID: 3208285061756340752, guid: c2ff489a34be94243b7b3e6731afc5f1, type: 3}
-  Gravity: {x: 0, y: -9.81, z: 0}
+  SpherePrefab: {fileID: 3208285061756340752, guid: c2ff489a34be94243b7b3e6731afc5f1, type: 3}
+  CubePrefab: {fileID: 4066910994234962998, guid: f8252f61cec95421cb295ae5c7bc1a0b, type: 3}
+  Gravity: {x: 0, y: -9.81}
