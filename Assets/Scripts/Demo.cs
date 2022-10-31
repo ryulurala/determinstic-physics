@@ -30,26 +30,26 @@ public class Demo : MonoBehaviour
             DSphere sphere = _dWorld.SpawnObject<DSphere>();
 
             sphere.DCollider2D = new DCircleCollider2D(sphere, (Fix64)0.5f, null);
-            sphere.DRigidbody2D = new DRigidbody2D(sphere, isKinematic: false, useGravity: false, Fix64.One);
+            sphere.DRigidbody2D = new DRigidbody2D(sphere, isKinematic: false, useGravity: true, Fix64.One);
         }
-        // {
-        //     DSphere sphere = _dWorld.SpawnObject<DSphere>();
+        {
+            DSphere sphere = _dWorld.SpawnObject<DSphere>();
 
-        //     sphere.DCollider2D = new DCircleCollider2D(sphere, (Fix64)0.5f, (collsionPoint, deltaTime) => Debug.Log($"B 충돌됨!"));
-        //     sphere.DRigidbody2D = new DRigidbody2D(sphere, isKinematic: false, useGravity: true, Fix64.One);
-        // }
+            sphere.DCollider2D = new DCircleCollider2D(sphere, (Fix64)0.5f, (collsionPoint, deltaTime) => Debug.Log($"B 충돌됨!"));
+            sphere.DRigidbody2D = new DRigidbody2D(sphere, isKinematic: false, useGravity: true, Fix64.One);
+        }
 
         // Cube
         {
             DCube cube = _dWorld.SpawnObject<DCube>();
             cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(1f, 1f), null);
-            cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: false, Fix64.One);
+            cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
         }
-        // {
-        //     DCube cube = _dWorld.SpawnObject<DCube>();
-        //     cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(1f, 1f), (collsionPoint, deltaTime) => Debug.Log($"B 충돌됨!"));
-        //     cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
-        // }
+        {
+            DCube cube = _dWorld.SpawnObject<DCube>();
+            cube.DCollider2D = new DBoxCollider2D(cube, new Vector2Fix(1f, 1f), (collsionPoint, deltaTime) => Debug.Log($"B 충돌됨!"));
+            cube.DRigidbody2D = new DRigidbody2D(cube, isKinematic: false, useGravity: true, Fix64.One);
+        }
     }
 
     void Start()
