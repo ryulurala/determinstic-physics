@@ -33,10 +33,22 @@ namespace Deterministic
 
         protected void ResolveCollisions(Fix32 deltaTime)
         {
-            // Collision Detection
             List<Manifold2D> collisions = new List<Manifold2D>();
             List<Manifold2D> triggers = new List<Manifold2D>();
 
+            // Collision Detection
+            DetectCollision(collisions, triggers);
+
+            // Collision Response: do not solve triggers
+            SolvedCollisions(collisions, deltaTime);
+
+            // Collision Callback
+            SendCollisionCallback(collisions, deltaTime);
+            SendCollisionCallback(triggers, deltaTime);
+        }
+
+        void DetectCollision(List<Manifold2D> collisions, List<Manifold2D> triggers)
+        {
             foreach (DObject dObjectA in _dObjectList)
             {
                 foreach (DObject dObjectB in _dObjectList)
@@ -56,14 +68,6 @@ namespace Deterministic
                     }
                 }
             }
-
-            // Collision Response: do not solve triggers
-            SolvedCollisions(collisions, deltaTime);
-
-            // Collision Callback
-            SendCollisionCallback(collisions, deltaTime);
-            SendCollisionCallback(triggers, deltaTime);
-
         }
 
         void SolvedCollisions(List<Manifold2D> collisionPoints, Fix32 deltaTime)
