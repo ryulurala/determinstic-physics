@@ -13,7 +13,7 @@ namespace Deterministic
             Size = size;
         }
 
-        public DBoxCollider2D(DObject dObject, Vector2Fix size, Action<Manifold2D, Fix64> callback)
+        public DBoxCollider2D(DObject dObject, Vector2Fix size, Action<Manifold2D, Fix32> callback)
         {
             DObject = dObject;
             Size = size;
@@ -31,21 +31,21 @@ namespace Deterministic
             collisionPoint = null;
 
             Vector2Fix circleCenter = other.DObject.DTransform.Position;
-            Fix64 radius = other.Radius;
+            Fix32 radius = other.Radius;
 
             Vector2Fix rectCenter = this.DObject.DTransform.Position;
-            Fix64 rectHalfWidth = this.Size.x * (Fix64)0.5f;
-            Fix64 rectHalfHeight = this.Size.y * (Fix64)0.5f;
-            Fix64 rectAngle = this.DObject.DTransform.Angle;
+            Fix32 rectHalfWidth = this.Size.x * (Fix32)0.5f;
+            Fix32 rectHalfHeight = this.Size.y * (Fix32)0.5f;
+            Fix32 rectAngle = this.DObject.DTransform.Angle;
 
-            Fix64 cosTheta = (Fix64)MathF.Cos((float)rectAngle);
-            Fix64 sinTheta = (Fix64)MathF.Sin((float)rectAngle);
+            Fix32 cosTheta = (Fix32)MathF.Cos((float)rectAngle);
+            Fix32 sinTheta = (Fix32)MathF.Sin((float)rectAngle);
             Vector2Fix rotatedCircleCenter = new Vector2Fix(
                 cosTheta * (circleCenter.x - rectCenter.x) - sinTheta * (circleCenter.y - rectCenter.y) + rectCenter.x,
                 sinTheta * (circleCenter.x - rectCenter.x) + cosTheta * (circleCenter.y - rectCenter.y) + rectCenter.y
                 );
 
-            Fix64 closestX;
+            Fix32 closestX;
             if (rotatedCircleCenter.x < rectCenter.x - rectHalfWidth)
                 closestX = rectCenter.x - rectHalfWidth;
             else if (rotatedCircleCenter.x > rectCenter.x + rectHalfWidth)
@@ -53,7 +53,7 @@ namespace Deterministic
             else
                 closestX = rotatedCircleCenter.x;
 
-            Fix64 closestY;
+            Fix32 closestY;
             if (rotatedCircleCenter.y < rectCenter.y - rectHalfHeight)
                 closestY = rectCenter.y - rectHalfHeight;
             else if (rotatedCircleCenter.y > rectCenter.y + rectHalfHeight)
@@ -61,14 +61,14 @@ namespace Deterministic
             else
                 closestY = rotatedCircleCenter.y;
 
-            Fix64 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
+            Fix32 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
             if (dist < radius)
             {
                 Vector2Fix thisToOther = circleCenter - rectCenter;
 
                 Vector2Fix normal;
-                Fix64 penetration;
-                if (thisToOther.magnitude > Fix64.Zero)
+                Fix32 penetration;
+                if (thisToOther.magnitude > Fix32.Zero)
                 {
                     normal = thisToOther.normalized;
                     penetration = dist;
@@ -98,28 +98,28 @@ namespace Deterministic
             Vector2Fix thisAxisX = this.DObject.DTransform.right;
             Vector2Fix thisAxisY = this.DObject.DTransform.up;
 
-            Vector2Fix otherExtentX = otherAxisX * other.Size.x * (Fix64)0.5f;
-            Vector2Fix otherExtentY = otherAxisY * other.Size.y * (Fix64)0.5f;
-            Vector2Fix thisExtentX = thisAxisX * this.Size.x * (Fix64)0.5f;
-            Vector2Fix thisExtentY = thisAxisY * this.Size.y * (Fix64)0.5f;
+            Vector2Fix otherExtentX = otherAxisX * other.Size.x * (Fix32)0.5f;
+            Vector2Fix otherExtentY = otherAxisY * other.Size.y * (Fix32)0.5f;
+            Vector2Fix thisExtentX = thisAxisX * this.Size.x * (Fix32)0.5f;
+            Vector2Fix thisExtentY = thisAxisY * this.Size.y * (Fix32)0.5f;
 
             Vector2Fix separatingAxis;
 
-            Fix64 projectedCenterToCenter;
-            Fix64 projectedOtherX;
-            Fix64 projectedOtherY;
-            Fix64 projectedThisX;
-            Fix64 projectedThisY;
+            Fix32 projectedCenterToCenter;
+            Fix32 projectedOtherX;
+            Fix32 projectedOtherY;
+            Fix32 projectedThisX;
+            Fix32 projectedThisY;
 
             // 1. Separating Axis is Other's X axis
             separatingAxis = otherAxisX;
 
             projectedCenterToCenter = Vector2Fix.Dot(thisToOther, separatingAxis);
 
-            projectedOtherX = Fix64.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
-            projectedOtherY = Fix64.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
-            projectedThisX = Fix64.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
-            projectedThisY = Fix64.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
+            projectedOtherX = Fix32.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
+            projectedOtherY = Fix32.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
+            projectedThisX = Fix32.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
+            projectedThisY = Fix32.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
 
             if (projectedCenterToCenter > projectedOtherX + projectedOtherY + projectedThisX + projectedThisY)
                 return false;
@@ -129,10 +129,10 @@ namespace Deterministic
 
             projectedCenterToCenter = Vector2Fix.Dot(thisToOther, separatingAxis);
 
-            projectedOtherX = Fix64.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
-            projectedOtherY = Fix64.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
-            projectedThisX = Fix64.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
-            projectedThisY = Fix64.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
+            projectedOtherX = Fix32.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
+            projectedOtherY = Fix32.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
+            projectedThisX = Fix32.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
+            projectedThisY = Fix32.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
 
             if (projectedCenterToCenter > projectedOtherX + projectedOtherY + projectedThisX + projectedThisY)
                 return false;
@@ -142,10 +142,10 @@ namespace Deterministic
 
             projectedCenterToCenter = Vector2Fix.Dot(thisToOther, separatingAxis);
 
-            projectedOtherX = Fix64.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
-            projectedOtherY = Fix64.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
-            projectedThisX = Fix64.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
-            projectedThisY = Fix64.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
+            projectedOtherX = Fix32.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
+            projectedOtherY = Fix32.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
+            projectedThisX = Fix32.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
+            projectedThisY = Fix32.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
 
             if (projectedCenterToCenter > projectedOtherX + projectedOtherY + projectedThisX + projectedThisY)
                 return false;
@@ -155,29 +155,29 @@ namespace Deterministic
 
             projectedCenterToCenter = Vector2Fix.Dot(thisToOther, separatingAxis);
 
-            projectedOtherX = Fix64.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
-            projectedOtherY = Fix64.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
-            projectedThisX = Fix64.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
-            projectedThisY = Fix64.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
+            projectedOtherX = Fix32.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
+            projectedOtherY = Fix32.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
+            projectedThisX = Fix32.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
+            projectedThisY = Fix32.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
 
             if (projectedCenterToCenter > projectedOtherX + projectedOtherY + projectedThisX + projectedThisY)
                 return false;
 
             // Ready to create Manifold
-            Fix64 centerDist = thisToOther.magnitude;
+            Fix32 centerDist = thisToOther.magnitude;
             Vector2Fix normal;
-            Fix64 penetration;
-            if (centerDist > Fix64.Zero)
+            Fix32 penetration;
+            if (centerDist > Fix32.Zero)
             {
                 // 중심과 중심 축으로 투영
                 separatingAxis = thisToOther.normalized;
 
                 projectedCenterToCenter = centerDist;
 
-                projectedOtherX = Fix64.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
-                projectedOtherY = Fix64.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
-                projectedThisX = Fix64.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
-                projectedThisY = Fix64.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
+                projectedOtherX = Fix32.Abs(Vector2Fix.Dot(otherExtentX, separatingAxis));
+                projectedOtherY = Fix32.Abs(Vector2Fix.Dot(otherExtentY, separatingAxis));
+                projectedThisX = Fix32.Abs(Vector2Fix.Dot(thisExtentX, separatingAxis));
+                projectedThisY = Fix32.Abs(Vector2Fix.Dot(thisExtentY, separatingAxis));
 
                 normal = thisToOther.normalized;
                 penetration = projectedCenterToCenter - (projectedOtherX + projectedOtherY + projectedThisX + projectedThisY);

@@ -3,7 +3,7 @@ using System;
 namespace FixedMath
 {
     // [1(sign)] [47(integer part)] [16(decimal part)] 
-    public struct Fix64 : IComparable<Fix64>, IEquatable<Fix64>
+    public struct Fix32 : IComparable<Fix32>, IEquatable<Fix32>
     {
         readonly long _rawValue;
 
@@ -13,31 +13,31 @@ namespace FixedMath
 
         const long ONE = 1L << SHIFT;
 
-        public static readonly Fix64 MaxValue = new Fix64(long.MaxValue);
-        public static readonly Fix64 MinValue = new Fix64(long.MinValue);
-        public static readonly Fix64 One = new Fix64(ONE);
-        public static readonly Fix64 Zero = new Fix64(0L);
+        public static readonly Fix32 MaxValue = new Fix32(long.MaxValue);
+        public static readonly Fix32 MinValue = new Fix32(long.MinValue);
+        public static readonly Fix32 One = new Fix32(ONE);
+        public static readonly Fix32 Zero = new Fix32(0L);
 
-        static readonly Fix64 _threehalfs = One + (One >> 1);     // 1.5, for. InvSqrt
+        static readonly Fix32 _threehalfs = One + (One >> 1);     // 1.5, for. InvSqrt
 
         #region Constructors
 
-        Fix64(int value)
+        Fix32(int value)
         {
             _rawValue = ((long)value) << SHIFT;     // for. decimal part
         }
 
-        Fix64(long value)
+        Fix32(long value)
         {
             _rawValue = value;
         }
 
-        Fix64(float value)
+        Fix32(float value)
         {
             _rawValue = (long)(value * ONE);
         }
 
-        Fix64(double value)
+        Fix32(double value)
         {
             _rawValue = (long)(value * ONE);
         }
@@ -46,29 +46,29 @@ namespace FixedMath
 
         #region Operators
 
-        public static Fix64 operator +(Fix64 a, Fix64 b)
+        public static Fix32 operator +(Fix32 a, Fix32 b)
         {
             long sum = a._rawValue + b._rawValue;
 #if !UNSAFE
             if (((a._rawValue ^ sum) & (b._rawValue ^ sum) >> (NBITS - 1)) != 0)
                 sum = a._rawValue > 0 ? long.MaxValue : long.MinValue;
 #endif
-            return new Fix64(sum);
+            return new Fix32(sum);
         }
 
-        public static Fix64 operator -(Fix64 a, Fix64 b)
+        public static Fix32 operator -(Fix32 a, Fix32 b)
         {
             long diff = a._rawValue - b._rawValue;
 #if !UNSAFE
             if (((~(a._rawValue ^ b._rawValue)) & (diff & a._rawValue)) < 0)
                 diff = a._rawValue > 0 ? long.MaxValue : long.MinValue;
 #endif
-            return new Fix64(diff);
+            return new Fix32(diff);
         }
 
-        public static Fix64 operator -(Fix64 value)
+        public static Fix32 operator -(Fix32 value)
         {
-            return value == MinValue ? MinValue : new Fix64(-value._rawValue);
+            return value == MinValue ? MinValue : new Fix32(-value._rawValue);
         }
 
         static long AddOverflowHelper(long x, long y, ref bool overflow)
@@ -79,105 +79,105 @@ namespace FixedMath
             return sum;
         }
 
-        public static Fix64 operator *(Fix64 a, Fix64 b)
+        public static Fix32 operator *(Fix32 a, Fix32 b)
         {
             // #if !UNSAFE
             //             if (b._rawValue > ONE && a._rawValue > 2147483647L / b._rawValue)
             //                 throw new OverflowException();
             // #endif
-            return new Fix64((a._rawValue * b._rawValue) >> SHIFT);
+            return new Fix32((a._rawValue * b._rawValue) >> SHIFT);
         }
 
-        public static Fix64 operator /(Fix64 a, Fix64 b)
+        public static Fix32 operator /(Fix32 a, Fix32 b)
         {
-            return new Fix64((a._rawValue << SHIFT) / b._rawValue);
+            return new Fix32((a._rawValue << SHIFT) / b._rawValue);
         }
 
-        public static Fix64 operator %(Fix64 a, Fix64 b)
+        public static Fix32 operator %(Fix32 a, Fix32 b)
         {
-            return new Fix64(a._rawValue % b._rawValue);
+            return new Fix32(a._rawValue % b._rawValue);
         }
 
-        public static bool operator ==(Fix64 a, Fix64 b)
+        public static bool operator ==(Fix32 a, Fix32 b)
         {
             return a._rawValue == b._rawValue;
         }
 
-        public static bool operator !=(Fix64 a, Fix64 b)
+        public static bool operator !=(Fix32 a, Fix32 b)
         {
             return !(a._rawValue == b._rawValue);
         }
 
-        public static bool operator >(Fix64 a, Fix64 b)
+        public static bool operator >(Fix32 a, Fix32 b)
         {
             return a._rawValue > b._rawValue;
         }
 
-        public static bool operator >=(Fix64 a, Fix64 b)
+        public static bool operator >=(Fix32 a, Fix32 b)
         {
             return a._rawValue >= b._rawValue;
         }
 
-        public static bool operator <(Fix64 a, Fix64 b)
+        public static bool operator <(Fix32 a, Fix32 b)
         {
             return a._rawValue < b._rawValue;
         }
 
-        public static bool operator <=(Fix64 a, Fix64 b)
+        public static bool operator <=(Fix32 a, Fix32 b)
         {
             return a._rawValue <= b._rawValue;
         }
 
-        public static Fix64 operator <<(Fix64 n, int shift)
+        public static Fix32 operator <<(Fix32 n, int shift)
         {
-            return new Fix64(n._rawValue << shift);
+            return new Fix32(n._rawValue << shift);
         }
 
-        public static Fix64 operator >>(Fix64 n, int shift)
+        public static Fix32 operator >>(Fix32 n, int shift)
         {
-            return new Fix64(n._rawValue >> shift);
+            return new Fix32(n._rawValue >> shift);
         }
 
         #endregion
 
         #region Casting
 
-        public static explicit operator Fix64(int value)
+        public static explicit operator Fix32(int value)
         {
-            return new Fix64(value);
+            return new Fix32(value);
         }
 
-        public static explicit operator Fix64(long value)
+        public static explicit operator Fix32(long value)
         {
-            return new Fix64(value << SHIFT);
+            return new Fix32(value << SHIFT);
         }
 
-        public static explicit operator Fix64(float value)
+        public static explicit operator Fix32(float value)
         {
-            return new Fix64(value);
+            return new Fix32(value);
         }
 
-        public static explicit operator Fix64(double value)
+        public static explicit operator Fix32(double value)
         {
-            return new Fix64(value);
+            return new Fix32(value);
         }
 
-        public static explicit operator int(Fix64 value)
+        public static explicit operator int(Fix32 value)
         {
             return (int)(value._rawValue >> SHIFT);
         }
 
-        public static explicit operator long(Fix64 value)
+        public static explicit operator long(Fix32 value)
         {
             return value._rawValue >> SHIFT;
         }
 
-        public static explicit operator float(Fix64 value)
+        public static explicit operator float(Fix32 value)
         {
             return (float)value._rawValue / ONE;
         }
 
-        public static explicit operator double(Fix64 value)
+        public static explicit operator double(Fix32 value)
         {
             return (double)value._rawValue / ONE;
         }
@@ -186,19 +186,19 @@ namespace FixedMath
 
         #region Inherited
 
-        public int CompareTo(Fix64 other)
+        public int CompareTo(Fix32 other)
         {
             return (int)(this - other);
         }
 
-        public bool Equals(Fix64 other)
+        public bool Equals(Fix32 other)
         {
             return this == other;
         }
 
         public override bool Equals(object obj)
         {
-            return (obj is Fix64) ? (this == ((Fix64)obj)) : false;
+            return (obj is Fix32) ? (this == ((Fix32)obj)) : false;
         }
 
         public override int GetHashCode()
@@ -215,37 +215,37 @@ namespace FixedMath
 
         #region Math
 
-        public static Fix64 Abs(Fix64 value)
+        public static Fix32 Abs(Fix32 value)
         {
             long mask = value._rawValue >> (NBITS - 1);
 
-            return new Fix64((value._rawValue + mask) ^ mask);
+            return new Fix32((value._rawValue + mask) ^ mask);
         }
 
-        public static Fix64 Clamp(Fix64 value, Fix64 min, Fix64 max)
+        public static Fix32 Clamp(Fix32 value, Fix32 min, Fix32 max)
         {
             return value > max ? max : value < min ? min : value;
         }
 
-        public static Fix64 Max(Fix64 a, Fix64 b)
+        public static Fix32 Max(Fix32 a, Fix32 b)
         {
             return a > b ? a : b;
         }
 
-        public static Fix64 Min(Fix64 a, Fix64 b)
+        public static Fix32 Min(Fix32 a, Fix32 b)
         {
             return a < b ? a : b;
         }
 
-        public static Fix64 Sqrt(Fix64 value, int iterations)
+        public static Fix32 Sqrt(Fix32 value, int iterations)
         {
             if (value._rawValue < 0)
                 throw new ArithmeticException("Nagative value");
 
             if (value._rawValue == 0)
-                return Fix64.Zero;
+                return Fix32.Zero;
 
-            Fix64 result = value + Fix64.One >> 1;
+            Fix32 result = value + Fix32.One >> 1;
             for (int i = 0; i < iterations; i++)
                 result = (result + (value / result)) >> 1;
 
@@ -255,12 +255,12 @@ namespace FixedMath
             return result;
         }
 
-        public static Fix64 Sqrt(Fix64 value)
+        public static Fix32 Sqrt(Fix32 value)
         {
             return Sqrt(value, NSQRT);
         }
 
-        public static Fix64 InvSqrt(Fix64 value, int iterations = 0)
+        public static Fix32 InvSqrt(Fix32 value, int iterations = 0)
         {
             return One / Sqrt(value);
         }

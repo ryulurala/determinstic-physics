@@ -5,7 +5,7 @@ namespace Deterministic
 {
     public class Position2DSolver : ISolver
     {
-        public void Solve(List<Manifold2D> collisionPoints, Fix64 deltaTime)
+        public void Solve(List<Manifold2D> collisionPoints, Fix32 deltaTime)
         {
             foreach (Manifold2D collision in collisionPoints)
             {

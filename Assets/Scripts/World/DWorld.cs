@@ -21,7 +21,7 @@ namespace Deterministic
             _dObjectList.Remove(dObject);
         }
 
-        public virtual void Tick(Fix64 deltaTime)
+        public virtual void Tick(Fix32 deltaTime)
         {
             int i = 0;
             int count = _dObjectList.Count;

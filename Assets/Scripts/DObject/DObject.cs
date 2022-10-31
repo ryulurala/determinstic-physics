@@ -33,7 +33,7 @@ namespace Deterministic
 
         public abstract void OnStart();
         public abstract void OnDestroy();
-        public abstract void Tick(Fix64 deltaTime);
+        public abstract void Tick(Fix32 deltaTime);
         public virtual void Destroy()
         {
             World.RemoveObject(this);

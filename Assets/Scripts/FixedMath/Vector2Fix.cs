@@ -4,8 +4,8 @@ namespace FixedMath
 {
     public struct Vector2Fix
     {
-        public Fix64 x;
-        public Fix64 y;
+        public Fix32 x;
+        public Fix32 y;
 
         public static Vector2Fix zero { get; } = new Vector2Fix(0, 0);
         public static Vector2Fix one { get; } = new Vector2Fix(1, 1);
@@ -15,8 +15,8 @@ namespace FixedMath
         public static Vector2Fix left { get; } = new Vector2Fix(-1, 0);
         public static Vector2Fix right { get; } = new Vector2Fix(1, 0);
 
-        public Fix64 sqrtMagnitude { get => DistanceSquared(this, zero); }
-        public Fix64 magnitude { get => Fix64.Sqrt(sqrtMagnitude); }
+        public Fix32 sqrtMagnitude { get => DistanceSquared(this, zero); }
+        public Fix32 magnitude { get => Fix32.Sqrt(sqrtMagnitude); }
 
         public Vector2Fix normalized
         {
@@ -31,7 +31,7 @@ namespace FixedMath
 
         #region Constructor
 
-        public Vector2Fix(Fix64 x, Fix64 y)
+        public Vector2Fix(Fix32 x, Fix32 y)
         {
             this.x = x;
             this.y = y;
@@ -39,20 +39,20 @@ namespace FixedMath
 
         public Vector2Fix(float x, float y)
         {
-            this.x = (Fix64)x;
-            this.y = (Fix64)y;
+            this.x = (Fix32)x;
+            this.y = (Fix32)y;
         }
 
         public Vector2Fix(int x, int y)
         {
-            this.x = (Fix64)x;
-            this.y = (Fix64)y;
+            this.x = (Fix32)x;
+            this.y = (Fix32)y;
         }
 
         public Vector2Fix(Vector2 v)
         {
-            x = (Fix64)v.x;
-            y = (Fix64)v.y;
+            x = (Fix32)v.x;
+            y = (Fix32)v.y;
         }
 
         #endregion
@@ -101,7 +101,7 @@ namespace FixedMath
             return v1;
         }
 
-        public static Vector2Fix operator *(Vector2Fix v, Fix64 fix)
+        public static Vector2Fix operator *(Vector2Fix v, Fix32 fix)
         {
             v.x *= fix;
             v.y *= fix;
@@ -111,7 +111,7 @@ namespace FixedMath
 
         public static Vector2Fix operator *(Vector2Fix v, int i)
         {
-            Fix64 fix = (Fix64)i;
+            Fix32 fix = (Fix32)i;
             v.x *= fix;
             v.y *= fix;
 
@@ -120,7 +120,7 @@ namespace FixedMath
 
         public static Vector2Fix operator *(Vector2Fix v, float f)
         {
-            Fix64 fix = (Fix64)f;
+            Fix32 fix = (Fix32)f;
             v.x *= fix;
             v.y *= fix;
 
@@ -135,7 +135,7 @@ namespace FixedMath
             return v1;
         }
 
-        public static Vector2Fix operator /(Vector2Fix v, Fix64 fix)
+        public static Vector2Fix operator /(Vector2Fix v, Fix32 fix)
         {
             v.x *= fix;
             v.y *= fix;
@@ -145,7 +145,7 @@ namespace FixedMath
 
         public static Vector2Fix operator /(Vector2Fix v, int i)
         {
-            Fix64 fix = (Fix64)i;
+            Fix32 fix = (Fix32)i;
             v.x /= fix;
             v.y /= fix;
 
@@ -154,7 +154,7 @@ namespace FixedMath
 
         public static Vector2Fix operator /(Vector2Fix v, float f)
         {
-            Fix64 fix = (Fix64)f;
+            Fix32 fix = (Fix32)f;
             v.x /= fix;
             v.y /= fix;
 
@@ -165,23 +165,23 @@ namespace FixedMath
 
         #region Math
 
-        public static Fix64 DistanceSquared(Vector2Fix v1, Vector2Fix v2)
+        public static Fix32 DistanceSquared(Vector2Fix v1, Vector2Fix v2)
         {
-            Fix64 x = v1.x - v2.x;
-            Fix64 y = v1.y - v2.y;
+            Fix32 x = v1.x - v2.x;
+            Fix32 y = v1.y - v2.y;
 
             return x * x + y * y;
         }
 
-        public static Fix64 Distance(Vector2Fix v1, Vector2Fix v2)
+        public static Fix32 Distance(Vector2Fix v1, Vector2Fix v2)
         {
-            return Fix64.Sqrt(DistanceSquared(v1, v2));
+            return Fix32.Sqrt(DistanceSquared(v1, v2));
         }
 
         public void Normalize()
         {
-            Fix64 sqrMag = sqrtMagnitude;
-            Fix64 invMag = (sqrMag > Fix64.Zero) ? Fix64.InvSqrt(sqrMag) : Fix64.Zero;
+            Fix32 sqrMag = sqrtMagnitude;
+            Fix32 invMag = (sqrMag > Fix32.Zero) ? Fix32.InvSqrt(sqrMag) : Fix32.Zero;
 
             x *= invMag;
             y *= invMag;
@@ -189,30 +189,30 @@ namespace FixedMath
 
         public static Vector2Fix Abs(Vector2Fix v)
         {
-            return new Vector2Fix(Fix64.Abs(v.x), Fix64.Abs(v.y));
+            return new Vector2Fix(Fix32.Abs(v.x), Fix32.Abs(v.y));
         }
 
         public static Vector2Fix Clamp(Vector2Fix value, Vector2Fix min, Vector2Fix max)
         {
-            value.x = Fix64.Clamp(value.x, min.x, max.x);
-            value.y = Fix64.Clamp(value.y, min.y, max.y);
+            value.x = Fix32.Clamp(value.x, min.x, max.x);
+            value.y = Fix32.Clamp(value.y, min.y, max.y);
 
             return value;
         }
 
-        public static Fix64 Dot(Vector2Fix v1, Vector2Fix v2)
+        public static Fix32 Dot(Vector2Fix v1, Vector2Fix v2)
         {
             return v1.x * v2.x + v1.y * v2.y;
         }
 
         public static Vector2Fix Max(Vector2Fix v1, Vector2Fix v2)
         {
-            return new Vector2Fix(Fix64.Max(v1.x, v2.x), Fix64.Max(v1.y, v2.y));
+            return new Vector2Fix(Fix32.Max(v1.x, v2.x), Fix32.Max(v1.y, v2.y));
         }
 
         public static Vector2Fix Min(Vector2Fix v1, Vector2Fix v2)
         {
-            return new Vector2Fix(Fix64.Min(v1.x, v2.x), Fix64.Max(v1.y, v2.y));
+            return new Vector2Fix(Fix32.Min(v1.x, v2.x), Fix32.Max(v1.y, v2.y));
         }
 
         #endregion
@@ -221,7 +221,7 @@ namespace FixedMath
 
         public static explicit operator Vector2Fix(Vector2 value)
         {
-            return new Vector2Fix((Fix64)value.x, (Fix64)value.y);
+            return new Vector2Fix((Fix32)value.x, (Fix32)value.y);
         }
 
         public static explicit operator Vector2(Vector2Fix value)

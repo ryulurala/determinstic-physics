@@ -13,7 +13,7 @@ namespace Deterministic
                 _solverList.AddRange(solvers);
         }
 
-        public override void Tick(Fix64 deltaTime)
+        public override void Tick(Fix32 deltaTime)
         {
             base.Tick(deltaTime);
 
@@ -31,7 +31,7 @@ namespace Deterministic
             _solverList.Remove(solver);
         }
 
-        protected void ResolveCollisions(Fix64 deltaTime)
+        protected void ResolveCollisions(Fix32 deltaTime)
         {
             // Collision Detection
             List<Manifold2D> collisions = new List<Manifold2D>();
@@ -66,7 +66,7 @@ namespace Deterministic
 
         }
 
-        void SolvedCollisions(List<Manifold2D> collisionPoints, Fix64 deltaTime)
+        void SolvedCollisions(List<Manifold2D> collisionPoints, Fix32 deltaTime)
         {
             foreach (ISolver solver in _solverList)
             {
@@ -74,7 +74,7 @@ namespace Deterministic
             }
         }
 
-        void SendCollisionCallback(List<Manifold2D> collisionPoints, Fix64 deltaTime)
+        void SendCollisionCallback(List<Manifold2D> collisionPoints, Fix32 deltaTime)
         {
             foreach (Manifold2D collisionPoint in collisionPoints)
             {

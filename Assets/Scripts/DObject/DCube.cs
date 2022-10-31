@@ -16,7 +16,7 @@ namespace Deterministic
 
         public override void OnDestroy() { }
 
-        public override void Tick(Fix64 deltaTime) { }
+        public override void Tick(Fix32 deltaTime) { }
     }
 }
 

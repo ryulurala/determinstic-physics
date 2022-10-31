@@ -11,7 +11,7 @@ namespace Deterministic
             _gravity = gravity;
         }
 
-        public override void Tick(Fix64 deltaTime)
+        public override void Tick(Fix32 deltaTime)
         {
             base.Tick(deltaTime);
 
@@ -32,7 +32,7 @@ namespace Deterministic
             }
         }
 
-        void Transform(Fix64 deltaTime)
+        void Transform(Fix32 deltaTime)
         {
             foreach (DObject dObject in _dObjectList)
                 dObject.DRigidbody2D?.Transform(deltaTime);

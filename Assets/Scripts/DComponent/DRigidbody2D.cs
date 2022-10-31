@@ -9,12 +9,12 @@ namespace Deterministic
         public bool IsKinematic { get; set; }
         public bool UseGravity { get; set; }
 
-        public Fix64 Mass { get; set; }
+        public Fix32 Mass { get; set; }
 
         public Vector2Fix Velocity { get; set; }
         Vector2Fix _force;
 
-        public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, Fix64 mass)
+        public DRigidbody2D(DObject dObject, bool isKinematic, bool useGravity, Fix32 mass)
         {
             DObject = dObject;
 
@@ -33,7 +33,7 @@ namespace Deterministic
                 _force += force;
         }
 
-        public void Transform(Fix64 deltaTime)
+        public void Transform(Fix32 deltaTime)
         {
             // 속도 = 가속도(= 힘/질량) * 시간
             Velocity += _force / Mass * deltaTime;

@@ -5,15 +5,15 @@ namespace Deterministic
 {
     public class DCircleCollider2D : DCollider2D
     {
-        public Fix64 Radius { get; set; }
+        public Fix32 Radius { get; set; }
 
-        public DCircleCollider2D(DObject dObject, Fix64 radius)
+        public DCircleCollider2D(DObject dObject, Fix32 radius)
         {
             DObject = dObject;
             Radius = radius;
         }
 
-        public DCircleCollider2D(DObject dObject, Fix64 radius, Action<Manifold2D, Fix64> callback)
+        public DCircleCollider2D(DObject dObject, Fix32 radius, Action<Manifold2D, Fix32> callback)
         {
             DObject = dObject;
             Radius = radius;
@@ -30,13 +30,13 @@ namespace Deterministic
         {
             collisionPoint = null;
 
-            Fix64 radiusDist = this.Radius + other.Radius;
+            Fix32 radiusDist = this.Radius + other.Radius;
 
             Vector2Fix otherCenter = other.DObject.DTransform.Position + (Vector2Fix)other.DObject.DTransform.Position;
             Vector2Fix thisCenter = this.DObject.DTransform.Position + (Vector2Fix)this.DObject.DTransform.Position;
 
             Vector2Fix thisToOther = otherCenter - thisCenter;
-            Fix64 centerDist = thisToOther.magnitude;
+            Fix32 centerDist = thisToOther.magnitude;
 
             if (centerDist > radiusDist)
                 return false;
@@ -48,8 +48,8 @@ namespace Deterministic
             }
 
             Vector2Fix normal;
-            Fix64 penetration;
-            if (centerDist > Fix64.Zero)
+            Fix32 penetration;
+            if (centerDist > Fix32.Zero)
             {
                 penetration = radiusDist - centerDist;
                 normal = thisToOther.normalized;
@@ -70,21 +70,21 @@ namespace Deterministic
             collisionPoint = null;
 
             Vector2Fix circleCenter = this.DObject.DTransform.Position;
-            Fix64 radius = this.Radius;
+            Fix32 radius = this.Radius;
 
             Vector2Fix rectCenter = other.DObject.DTransform.Position;
-            Fix64 rectHalfWidth = other.Size.x * (Fix64)0.5f;
-            Fix64 rectHalfHeight = other.Size.y * (Fix64)0.5f;
-            Fix64 rectAngle = other.DObject.DTransform.Angle;
+            Fix32 rectHalfWidth = other.Size.x * (Fix32)0.5f;
+            Fix32 rectHalfHeight = other.Size.y * (Fix32)0.5f;
+            Fix32 rectAngle = other.DObject.DTransform.Angle;
 
-            Fix64 cosTheta = (Fix64)MathF.Cos((float)rectAngle);
-            Fix64 sinTheta = (Fix64)MathF.Sin((float)rectAngle);
+            Fix32 cosTheta = (Fix32)MathF.Cos((float)rectAngle);
+            Fix32 sinTheta = (Fix32)MathF.Sin((float)rectAngle);
             Vector2Fix rotatedCircleCenter = new Vector2Fix(
                 cosTheta * (circleCenter.x - rectCenter.x) - sinTheta * (circleCenter.y - rectCenter.y) + rectCenter.x,
                 sinTheta * (circleCenter.x - rectCenter.x) + cosTheta * (circleCenter.y - rectCenter.y) + rectCenter.y
                 );
 
-            Fix64 closestX;
+            Fix32 closestX;
             if (rotatedCircleCenter.x < rectCenter.x - rectHalfWidth)
                 closestX = rectCenter.x - rectHalfWidth;
             else if (rotatedCircleCenter.x > rectCenter.x + rectHalfWidth)
@@ -92,7 +92,7 @@ namespace Deterministic
             else
                 closestX = rotatedCircleCenter.x;
 
-            Fix64 closestY;
+            Fix32 closestY;
             if (rotatedCircleCenter.y < rectCenter.y - rectHalfHeight)
                 closestY = rectCenter.y - rectHalfHeight;
             else if (rotatedCircleCenter.y > rectCenter.y + rectHalfHeight)
@@ -100,14 +100,14 @@ namespace Deterministic
             else
                 closestY = rotatedCircleCenter.y;
 
-            Fix64 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
+            Fix32 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
             if (dist < radius)
             {
                 Vector2Fix thisToOther = rectCenter - circleCenter;
 
                 Vector2Fix normal;
-                Fix64 penetration;
-                if (thisToOther.magnitude > Fix64.Zero)
+                Fix32 penetration;
+                if (thisToOther.magnitude > Fix32.Zero)
                 {
                     normal = thisToOther.normalized;
                     penetration = dist;
