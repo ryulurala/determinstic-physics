@@ -18,7 +18,7 @@ namespace Deterministic
             // Gravity
             ApplyForces();
             // Transform
-            Transform(deltaTime);
+            Simulate(deltaTime);
         }
 
         void ApplyForces()
@@ -32,10 +32,10 @@ namespace Deterministic
             }
         }
 
-        void Transform(Fix32 deltaTime)
+        void Simulate(Fix32 deltaTime)
         {
             foreach (DObject dObject in _dObjectList)
-                dObject.DRigidbody2D?.Transform(deltaTime);
+                dObject.DRigidbody2D?.Simulate(deltaTime);
         }
     }
 }

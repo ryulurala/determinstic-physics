@@ -33,7 +33,7 @@ namespace Deterministic
                 _force += force;
         }
 
-        public void Transform(Fix32 deltaTime)
+        public void Simulate(Fix32 deltaTime)
         {
             // 속도 = 가속도(= 힘/질량) * 시간
             Velocity += _force / Mass * deltaTime;
