@@ -11,9 +11,9 @@ namespace Deterministic
             _gravity = gravity;
         }
 
-        public override void Step(Fix64 deltaTime)
+        public override void Tick(Fix64 deltaTime)
         {
-            base.Step(deltaTime);
+            base.Tick(deltaTime);
 
             // Gravity
             ApplyForces();

@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace Deterministic
 {
-    public class DObject
+    public abstract class DObject
     {
+        public DWorld World { get; set; }
+
         GameObject _renderObject;
         public GameObject RenderObject
         {
@@ -18,6 +20,7 @@ namespace Deterministic
                 }
             }
         }
+
         public DTransform DTransform { get; set; }
 
         public DCollider2D DCollider2D { get; set; }
@@ -28,9 +31,12 @@ namespace Deterministic
             DTransform = new DTransform(this);
         }
 
-        public void Step(Fix64 deltaTime)
+        public abstract void OnStart();
+        public abstract void OnDestroy();
+        public abstract void Tick(Fix64 deltaTime);
+        public virtual void Destroy()
         {
-
+            World.RemoveObject(this);
         }
     }
 }

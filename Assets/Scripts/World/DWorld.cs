@@ -9,18 +9,35 @@ namespace Deterministic
 
         public void AddObject(DObject dObject)
         {
+            dObject.OnStart();
+
             _dObjectList.Add(dObject);
         }
 
         public void RemoveObject(DObject dObject)
         {
+            dObject.OnDestroy();
+
             _dObjectList.Remove(dObject);
         }
 
-        public virtual void Step(Fix64 deltaTime)
+        public virtual void Tick(Fix64 deltaTime)
         {
-            foreach (DObject dObject in _dObjectList)
-                dObject.Step(deltaTime);
+            int i = 0;
+            int count = _dObjectList.Count;
+            while (i < _dObjectList.Count)
+            {
+                DObject dObject = _dObjectList[i];
+                dObject.Tick(deltaTime);
+
+                if (count > _dObjectList.Count)
+                {
+                    i -= (count - _dObjectList.Count);
+                    count = _dObjectList.Count;
+                }
+
+                i++;
+            }
         }
 
         public T SpawnObject<T>() where T : DObject, new()
@@ -31,6 +48,7 @@ namespace Deterministic
         public T SpawnObject<T>(Vector2Fix position) where T : DObject, new()
         {
             T t = new T();
+            t.World = this;
             t.DTransform.Position = position;
             t.DTransform.Snap();
 

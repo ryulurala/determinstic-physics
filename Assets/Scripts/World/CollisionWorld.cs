@@ -13,9 +13,9 @@ namespace Deterministic
                 _solverList.AddRange(solvers);
         }
 
-        public override void Step(Fix64 deltaTime)
+        public override void Tick(Fix64 deltaTime)
         {
-            base.Step(deltaTime);
+            base.Tick(deltaTime);
 
             // Collision
             ResolveCollisions(deltaTime);

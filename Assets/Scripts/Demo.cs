@@ -58,7 +58,7 @@ public class Demo : MonoBehaviour
 
     void FixedUpdate()
     {
-        _dWorld.Step((Fix64)Time.deltaTime);
+        _dWorld.Tick((Fix64)Time.deltaTime);
     }
 
     public T CreateObject<T>() where T : Component
