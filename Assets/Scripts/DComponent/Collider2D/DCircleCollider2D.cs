@@ -42,7 +42,7 @@ namespace Deterministic
                 return false;
             else if (this.IsTrigger || other.IsTrigger)
             {
-                collisionPoint = new Manifold2D(this.DObject, other.DObject);
+                collisionPoint = new Manifold2D(other.DObject, this.DObject);
 
                 return true;
             }
@@ -60,7 +60,7 @@ namespace Deterministic
                 normal = new Vector2Fix(1, 0);
             }
 
-            collisionPoint = new Manifold2D(this.DObject, other.DObject, normal, penetration);
+            collisionPoint = new Manifold2D(other.DObject, this.DObject, normal, penetration);
 
             return true;
         }
