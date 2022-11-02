@@ -103,6 +103,7 @@ namespace Deterministic
             Fix32 dist = Vector2Fix.Distance(rotatedCircleCenter, new Vector2Fix(closestX, closestY));
             if (dist < radius)
             {
+                // 충돌
                 Vector2Fix thisToOther = rectCenter - circleCenter;
 
                 Vector2Fix normal;
@@ -110,14 +111,13 @@ namespace Deterministic
                 if (thisToOther.magnitude > Fix32.Zero)
                 {
                     normal = thisToOther.normalized;
-                    penetration = dist;
+                    penetration = radius - dist;
                 }
                 else
                 {
                     normal = Vector2Fix.right;
                     penetration = radius > rectHalfWidth ? radius + radius : rectHalfWidth + rectHalfWidth;
                 }
-
                 collisionPoint = new Manifold2D(other.DObject, this.DObject, normal, penetration);
 
                 return true;

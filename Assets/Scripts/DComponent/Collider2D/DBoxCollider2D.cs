@@ -71,14 +71,13 @@ namespace Deterministic
                 if (thisToOther.magnitude > Fix32.Zero)
                 {
                     normal = thisToOther.normalized;
-                    penetration = dist;
+                    penetration = radius - dist;
                 }
                 else
                 {
                     normal = Vector2Fix.right;
                     penetration = radius > rectHalfWidth ? radius + radius : rectHalfWidth + rectHalfWidth;
                 }
-
                 collisionPoint = new Manifold2D(other.DObject, this.DObject, normal, penetration);
 
                 return true;
