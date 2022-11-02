@@ -35,10 +35,10 @@ namespace Deterministic
 
         public void Simulate(Fix32 deltaTime)
         {
-            // 속도 = 가속도(= 힘/질량) * 시간
+            // 속도 = 초기 속도 + 가속도(= 힘/질량) * 시간
             Velocity += _force / Mass * deltaTime;
 
-            // 위치 = 속도 * 시간
+            // 위치 = 초기 위치 + 속도 * 시간
             DObject.DTransform.Position += (Vector2Fix)Velocity * deltaTime;
 
             // 알짜힘 초기화
